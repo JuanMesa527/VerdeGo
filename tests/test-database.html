@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Base de Datos - VerdeGo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+        .section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        button.danger {
+            background: #dc3545;
+        }
+        button.danger:hover {
+            background: #c82333;
+        }
+        .result {
+            background: white;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        h1 { color: #28a745; }
+        h2 { margin-top: 0; }
+        .codigo {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🗄️ Prueba de Base de Datos SQLite - VerdeGo</h1>
+
+    <!-- Crear Usuario -->
+    <div class="section">
+        <h2>1. Crear Usuario (INSERT con Cédula + bcrypt)</h2>
+        <div class="codigo">POST /api/crear-usuario</div>
+        <input type="number" id="user_id" placeholder="Cédula" value="123456789">
+        <input type="email" id="email" placeholder="Email" value="juan@example.com">
+        <input type="password" id="password" placeholder="Password" value="password123">
+        <button onclick="crearUsuario()">Crear Usuario</button>
+        <div id="result-crear" class="result"></div>
+    </div>
+
+    <!-- Login -->
+    <div class="section">
+        <h2>2. Login - Verificar Contraseña (bcrypt.compare + JWT)</h2>
+        <div class="codigo">POST /api/login</div>
+        <input type="email" id="login-email" placeholder="Email" value="juan@example.com">
+        <input type="password" id="login-password" placeholder="Password" value="password123">
+        <button onclick="hacerLogin()">Iniciar Sesión</button>
+        <div id="result-login" class="result"></div>
+        <div id="token-display" style="margin-top: 10px; font-size: 12px; word-break: break-all;"></div>
+    </div>
+
+    <!-- Verificar Token -->
+    <div class="section">
+        <h2>2.1. Verificar Token JWT</h2>
+        <div class="codigo">GET /api/verificar-token (requiere Authorization header)</div>
+        <button onclick="verificarToken()">Verificar Token Guardado</button>
+        <div id="result-verificar" class="result"></div>
+    </div>
+
+    <!-- Perfil (Ruta Protegida) -->
+    <div class="section">
+        <h2>2.2. Obtener Perfil (Ruta Protegida)</h2>
+        <div class="codigo">GET /api/perfil (requiere Authorization header)</div>
+        <button onclick="obtenerPerfil()">Obtener Mi Perfil</button>
+        <div id="result-perfil" class="result"></div>
+    </div>
+
+    <!-- Listar Usuarios -->
+    <div class="section">
+        <h2>3. Listar Todos los Usuarios (SELECT)</h2>
+        <div class="codigo">GET /api/usuarios</div>
+        <button onclick="listarUsuarios()">Ver Todos los Usuarios</button>
+        <div id="result-listar" class="result"></div>
+    </div>
+
+    <!-- Buscar Usuario -->
+    <div class="section">
+        <h2>4. Buscar Usuario por Email (SELECT WHERE)</h2>
+        <div class="codigo">GET /api/usuario/:email</div>
+        <input type="email" id="buscar-email" placeholder="Email a buscar" value="juan@example.com">
+        <button onclick="buscarUsuario()">Buscar Usuario</button>
+        <div id="result-buscar" class="result"></div>
+    </div>
+
+    <!-- Eliminar Usuario -->
+    <div class="section">
+        <h2>5. Eliminar Usuario (DELETE)</h2>
+        <div class="codigo">DELETE /api/usuario/:id</div>
+        <input type="number" id="eliminar-id" placeholder="ID del usuario" value="1">
+        <button class="danger" onclick="eliminarUsuario()">Eliminar Usuario</button>
+        <div id="result-eliminar" class="result"></div>
+    </div>
+
+    <!-- Ver Ranks -->
+    <div class="section">
+        <h2>6. Ver Ranks Disponibles</h2>
+        <div class="codigo">GET /api/ranks</div>
+        <button onclick="verRanks()">Ver Todos los Ranks</button>
+        <div id="result-ranks" class="result"></div>
+    </div>
+
+    <!-- Crear Ubicación -->
+    <div class="section">
+        <h2>7. Crear Ubicación</h2>
+        <div class="codigo">POST /api/ubicacion</div>
+        <input type="text" id="loc-name" placeholder="Nombre" value="Punto Verde Centro">
+        <input type="text" id="loc-type" placeholder="Tipo" value="reciclaje">
+        <input type="number" id="loc-credits" placeholder="Créditos" value="10">
+        <button onclick="crearUbicacion()">Crear Ubicación</button>
+        <div id="result-ubicacion" class="result"></div>
+    </div>
+
+    <!-- Ver Ubicaciones -->
+    <div class="section">
+        <h2>8. Ver Ubicaciones</h2>
+        <div class="codigo">GET /api/ubicaciones</div>
+        <button onclick="verUbicaciones()">Ver Todas las Ubicaciones</button>
+        <div id="result-ubicaciones" class="result"></div>
+    </div>
+
+    <!-- Crear Transacción -->
+    <div class="section">
+        <h2>9. Crear Transacción (Agregar Créditos)</h2>
+        <div class="codigo">POST /api/transaccion</div>
+        <input type="number" id="trans-user" placeholder="User ID" value="1">
+        <input type="text" id="trans-type" placeholder="Tipo" value="ganancia">
+        <input type="number" id="trans-amount" placeholder="Cantidad" value="50">
+        <button onclick="crearTransaccion()">Registrar Transacción</button>
+        <div id="result-transaccion" class="result"></div>
+    </div>
+
+    <!-- Ver Transacciones -->
+    <div class="section">
+        <h2>10. Ver Transacciones de Usuario</h2>
+        <div class="codigo">GET /api/transacciones/:user_id</div>
+        <input type="number" id="trans-buscar" placeholder="User ID" value="1">
+        <button onclick="verTransacciones()">Ver Transacciones</button>
+        <div id="result-transacciones" class="result"></div>
+    </div>
+
+    <script>
+        // Variable global para guardar el token
+        let authToken = null;
+
+        // Función auxiliar para mostrar resultados
+        function mostrarResultado(elementId, data, esError = false) {
+            const element = document.getElementById(elementId);
+            element.style.borderLeft = esError ? '4px solid #dc3545' : '4px solid #28a745';
+            element.textContent = JSON.stringify(data, null, 2);
+        }
+
+        // 1. Crear usuario
+        async function crearUsuario() {
+            const id = document.getElementById('user_id').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/crear-usuario', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, email, password })
+                });
+
+                const data = await response.json();
+                mostrarResultado('result-crear', data, !response.ok);
+
+                // Si fue exitoso, actualizar la lista
+                if (response.ok) {
+                    listarUsuarios();
+                }
+            } catch (error) {
+                mostrarResultado('result-crear', { error: error.message }, true);
+            }
+        }
+
+        // 2. Login
+        async function hacerLogin() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                mostrarResultado('result-login', data, !response.ok);
+
+                // Si login exitoso, guardar el token
+                if (response.ok && data.token) {
+                    authToken = data.token;
+                    
+                    // Mostrar el token (solo para demostración)
+                    const tokenDisplay = document.getElementById('token-display');
+                    tokenDisplay.innerHTML = `
+                        <strong>🎫 Token JWT guardado:</strong><br>
+                        <span style="color: #28a745;">${authToken.substring(0, 50)}...</span>
+                        <br><small>Este token se usará en las rutas protegidas</small>
+                    `;
+                    
+                    console.log('Token guardado:', authToken);
+                }
+            } catch (error) {
+                mostrarResultado('result-login', { error: error.message }, true);
+            }
+        }
+
+        // 2.1. Verificar token
+        async function verificarToken() {
+            if (!authToken) {
+                mostrarResultado('result-verificar', { error: 'Primero debes hacer login' }, true);
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/verificar-token', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+                mostrarResultado('result-verificar', data, !response.ok);
+            } catch (error) {
+                mostrarResultado('result-verificar', { error: error.message }, true);
+            }
+        }
+
+        // 2.2. Obtener perfil (ruta protegida)
+        async function obtenerPerfil() {
+            if (!authToken) {
+                mostrarResultado('result-perfil', { error: 'Primero debes hacer login' }, true);
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/perfil', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+                mostrarResultado('result-perfil', data, !response.ok);
+            } catch (error) {
+                mostrarResultado('result-perfil', { error: error.message }, true);
+            }
+        }
+
+        // 3. Listar usuarios
+        async function listarUsuarios() {
+            try {
+                const response = await fetch('/api/usuarios');
+                const data = await response.json();
+                mostrarResultado('result-listar', data, !response.ok);
+            } catch (error) {
+                mostrarResultado('result-listar', { error: error.message }, true);
+            }
+        }
+
+        // 3. Buscar usuario
+        async function buscarUsuario() {
+            const email = document.getElementById('buscar-email').value;
+
+            try {
+                const response = await fetch(`/api/usuario/${email}`);
+                const data = await response.json();
+                mostrarResultado('result-buscar', data, !response.ok);
+            } catch (error) {
+                mostrarResultado('result-buscar', { error: error.message }, true);
+            }
+        }
+
+        // 4. Eliminar usuario
+        async function eliminarUsuario() {
+            const id = document.getElementById('eliminar-id').value;
+
+            if (!confirm(`¿Estás seguro de eliminar el usuario con ID ${id}?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/usuario/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+                mostrarResultado('result-eliminar', data, !response.ok);
+
+                // Si fue exitoso, actualizar la lista
+                if (response.ok) {
+                    listarUsuarios();
+                }
+            } catch (error) {
+                mostrarResultado('result-eliminar', { error: error.message }, true);
+            }
+        }
+
+        // Cargar usuarios al inicio
+        window.onload = () => {
+            listarUsuarios();
+        };
+
+        // 5. Ver ranks
+        async function verRanks() {
+            try {
+                const response = await fetch('/api/ranks');
+                const data = await response.json();
+                mostrarResultado('result-ranks', data, !response.ok);
+            } catch (error) {
+                mostrarResultado('result-ranks', { error: error.message }, true);
+            }
+        }
+
+        // 6. Crear ubicación
+        async function crearUbicacion() {
+            const name = document.getElementById('loc-name').value;
+            const type = document.getElementById('loc-type').value;
+            const credits_reward = document.getElementById('loc-credits').value;
+
+            try {
+                const response = await fetch('/api/ubicacion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, type, credits_reward })
+                });
+
+                const data = await response.json();
+                mostrarResultado('result-ubicacion', data, !response.ok);
+
+                if (response.ok) {
+                    verUbicaciones();
+                }
+            } catch (error) {
+                mostrarResultado('result-ubicacion', { error: error.message }, true);
+            }
+        }
+
+        // 7. Ver ubicaciones
+        async function verUbicaciones() {
+            try {
+                const response = await fetch('/api/ubicaciones');
+                const data = await response.json();
+                mostrarResultado('result-ubicaciones', data, !response.ok);
+            } catch (error) {
+                mostrarResultado('result-ubicaciones', { error: error.message }, true);
+            }
+        }
+
+        // 8. Crear transacción
+        async function crearTransaccion() {
+            const user_id = document.getElementById('trans-user').value;
+            const type = document.getElementById('trans-type').value;
+            const amount = document.getElementById('trans-amount').value;
+
+            try {
+                const response = await fetch('/api/transaccion', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id, type, amount, description: 'Prueba de transacción' })
+                });
+
+                const data = await response.json();
+                mostrarResultado('result-transaccion', data, !response.ok);
+
+                if (response.ok) {
+                    listarUsuarios();
+                    verTransacciones();
+                }
+            } catch (error) {
+                mostrarResultado('result-transaccion', { error: error.message }, true);
+            }
+        }
+
+        // 9. Ver transacciones
+        async function verTransacciones() {
+            const user_id = document.getElementById('trans-buscar').value;
+
+            try {
+                const response = await fetch(`/api/transacciones/${user_id}`);
+                const data = await response.json();
+                mostrarResultado('result-transacciones', data, !response.ok);
+            } catch (error) {
+                mostrarResultado('result-transacciones', { error: error.message }, true);
+            }
+        }
+    </script>
+</body>
+</html>
