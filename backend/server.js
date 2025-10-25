@@ -18,6 +18,9 @@ const userController = require('./controllers/userController');
 const transactionController = require('./controllers/transactionController');
 const locationController = require('./controllers/locationController');
 const rankController = require('./controllers/rankController');
+const pointsController = require('./controllers/pointsController');
+const bonusController = require('./controllers/bonusController');
+const rechargeController = require('./controllers/rechargeController');
 
 // Importar middleware
 const { verificarToken } = require('./middleware/auth');
@@ -72,6 +75,21 @@ app.post('/api/rank', rankController.createRank);
 app.post('/api/transaccion', transactionController.createTransaction);
 app.get('/api/transacciones', transactionController.getAllTransactions);
 
+// Rutas de puntos (simulación)
+app.post('/api/actualizar-puntos', verificarToken, pointsController.updateUserPoints);
+app.get('/api/puntos/:userId', pointsController.getUserPoints);
+
+// Rutas de bonos
+app.post('/api/canjear-bono', verificarToken, bonusController.redeemBonus);
+app.get('/api/bonos-canjeados/:userId', bonusController.getUserRedeemedBonuses);
+app.get('/api/estadisticas-bonos/:userId', bonusController.getUserBonusStats);
+
+// Rutas de recargas TuLlave
+app.post('/api/crear-recarga', verificarToken, rechargeController.createRecharge);
+app.get('/api/recargas/:userId', rechargeController.getUserRecharges);
+app.get('/api/estadisticas-recargas/:userId', rechargeController.getRechargeStats);
+app.post('/api/verificar-puntos', rechargeController.checkPointsAvailability);
+
 // ============================================
 // RUTA PARA SERVIR EL FRONTEND
 // ============================================
@@ -88,6 +106,26 @@ app.get('/login', (req, res) => {
 
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/pages/register.html'));
+});
+
+app.get('/simulacion', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/simulacion/index.html'));
+});
+
+app.get('/simulacion/test', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/simulacion/test-ruta.html'));
+});
+
+app.get('/pages/user/bonuses', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/user/bonuses.html'));
+});
+
+app.get('/pages/user/account', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/user/account.html'));
+});
+
+app.get('/pages/user/recharges', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/user/recharges.html'));
 });
 
 // ============================================

@@ -170,20 +170,65 @@ async function getProfile() {
 
 async function updateAuthUI() {
     const authenticated = await isAuthenticated();
-    const user = getUser();
+    let user = getUser();
 
     const authButtons = document.querySelector('.auth-buttons');
     if (!authButtons) return;
 
     if (authenticated && user) {
-        // Usuario autenticado - Mostrar perfil y botón de cerrar sesión
+        // Intentar obtener puntos actualizados del servidor
+        try {
+            const response = await fetch(`http://localhost:3000/api/puntos/${user.id}`);
+            if (response.ok) {
+                const data = await response.json();
+                user.credits = data.credits || 0;
+                saveUser(user); // Actualizar localStorage
+                console.log('✅ Puntos actualizados en el menú:', user.credits);
+            }
+        } catch (error) {
+            console.log('⚠️ No se pudieron actualizar puntos, usando datos locales');
+        }
+
+        // Usuario autenticado - Mostrar menú de usuario
         authButtons.innerHTML = `
-            <span class="user-info">
-                <span class="user-welcome">👋 Hola, ${user.name || user.email.split('@')[0]}</span>
-                <span class="user-credits">⭐ ${user.credits} créditos</span>
-                <span class="user-rank">🏆 ${user.rank_name || 'Novato'}</span>
-            </span>
-            <button class="btn-logout" onclick="logout()">Cerrar Sesión</button>
+            <div class="user-menu-container">
+                <button class="user-menu-btn" onclick="toggleUserMenu()">
+                    <span class="user-info-compact">
+                        <span class="user-name">👋 ${user.name || user.email.split('@')[0]}</span>
+                        <span class="user-credits">⭐ ${user.credits || 0}</span>
+                    </span>
+                    <span class="menu-arrow">▼</span>
+                </button>
+                <div class="user-dropdown" id="userDropdown">
+                    <div class="dropdown-header">
+                        <div class="user-avatar">👤</div>
+                        <div class="user-details">
+                            <p class="user-full-name">${user.name} ${user.surname || ''}</p>
+                            <p class="user-email">${user.email}</p>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item" onclick="goToMyAccount()">
+                            <span class="item-icon">👤</span>
+                            <span class="item-text">Mi Cuenta</span>
+                        </li>
+                        <li class="dropdown-item" onclick="goToMyBonuses()">
+                            <span class="item-icon">🎁</span>
+                            <span class="item-text">Mis Bonos</span>
+                        </li>
+                        <li class="dropdown-item" onclick="goToMyRecharges()">
+                            <span class="item-icon">💳</span>
+                            <span class="item-text">Mis Recargas</span>
+                        </li>
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-item logout-item" onclick="logout()">
+                            <span class="item-icon">🚪</span>
+                            <span class="item-text">Cerrar Sesión</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         `;
     } else {
         // Usuario no autenticado - Mostrar botones de login/registro
@@ -192,6 +237,43 @@ async function updateAuthUI() {
             <button class="btn-register" onclick="window.location.href='/pages/register.html'">Registro</button>
         `;
     }
+}
+
+// ============================================
+// FUNCIONES DEL MENÚ DE USUARIO
+// ============================================
+
+// Toggle del menú desplegable
+function toggleUserMenu() {
+    const dropdown = document.getElementById('userDropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('show');
+    }
+}
+
+// Cerrar menú al hacer clic fuera
+document.addEventListener('click', (event) => {
+    const userMenu = document.querySelector('.user-menu-container');
+    const dropdown = document.getElementById('userDropdown');
+    
+    if (userMenu && dropdown && !userMenu.contains(event.target)) {
+        dropdown.classList.remove('show');
+    }
+});
+
+// Navegación a Mi Cuenta
+function goToMyAccount() {
+    window.location.href = '/pages/user/account.html';
+}
+
+// Navegación a Mis Bonos
+function goToMyBonuses() {
+    window.location.href = '/pages/user/bonuses.html';
+}
+
+// Navegación a Mis Recargas
+function goToMyRecharges() {
+    window.location.href = '/pages/user/recharges.html';
 }
 
 // ============================================

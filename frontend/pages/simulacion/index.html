@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación de Reciclaje - VerdeGo</title>
+    <link rel="stylesheet" href="../../public/css/style.css">
+    <style>
+        .simulation-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .simulation-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .simulation-header h1 {
+            color: #28a745;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .simulation-header p {
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-box .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .stat-box .label {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .stat-box .value {
+            color: #28a745;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .materials-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .materials-section h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .material-item {
+            display: grid;
+            grid-template-columns: 80px 1fr 150px 120px 150px;
+            gap: 15px;
+            align-items: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .material-item:hover {
+            border-color: #28a745;
+            transform: translateX(5px);
+        }
+
+        .material-icon {
+            font-size: 48px;
+            text-align: center;
+        }
+
+        .material-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .material-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .material-rate {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .weight-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .weight-input input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .weight-input input:focus {
+            outline: none;
+            border-color: #28a745;
+        }
+
+        .weight-input label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .points-display {
+            text-align: center;
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 8px;
+        }
+
+        .points-display .points {
+            color: #28a745;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .points-display .label {
+            color: #6c757d;
+            font-size: 12px;
+        }
+
+        .add-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .add-button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .add-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            padding: 30px;
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .summary-section h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .summary-items {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn-recycle {
+            background: white;
+            color: #28a745;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .btn-recycle:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        .btn-clear {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 15px 40px;
+            border: 2px solid white;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .badge-display {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .badge-display .current-badge {
+            font-size: 80px;
+            margin-bottom: 15px;
+        }
+
+        .badge-display .badge-name {
+            font-size: 28px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .badge-display .badge-description {
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .material-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../../public/assets/logo.jpg" alt="VerdeGo Logo" onclick="window.location.href='../../index.html'">
+            </div>
+            <nav class="nav-buttons">
+                <button class="nav-btn" onclick="window.location.href='../../index.html'">Inicio</button>
+                <button class="nav-btn">Servicios</button>
+                <button class="nav-btn">Nosotros</button>
+                <button class="nav-btn">Contacto</button>
+            </nav>
+            <div class="auth-buttons"></div>
+        </div>
+    </header>
+
+    <div class="simulation-container">
+        <!-- Header -->
+        <div class="simulation-header">
+            <h1>♻️ Simulador de Reciclaje por Peso</h1>
+            <p>Ingresa el peso de los materiales que vas a reciclar y obtén tus puntos</p>
+            
+            <!-- Instrucciones -->
+            <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: left;">
+                <h3 style="margin: 0 0 10px 0; color: #856404; font-size: 16px;">
+                    📋 ¿Cómo funciona?
+                </h3>
+                <ol style="margin: 0; padding-left: 20px; color: #856404;">
+                    <li><strong>Paso 1:</strong> Ingresa el peso en kilogramos (kg) del material que vas a reciclar</li>
+                    <li><strong>Paso 2:</strong> Haz clic en el botón verde <strong>"Agregar"</strong> de ese material</li>
+                    <li><strong>Paso 3:</strong> Repite con todos los materiales que quieras reciclar</li>
+                    <li><strong>Paso 4:</strong> Cuando termines, haz clic en <strong>"♻️ Reciclar Todo"</strong> para ganar tus puntos</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-box">
+                <div class="icon">⭐</div>
+                <div class="label">Puntos Totales</div>
+                <div class="value" id="totalPoints">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon">⚖️</div>
+                <div class="label">Peso Total Reciclado</div>
+                <div class="value"><span id="totalWeight">0</span> kg</div>
+            </div>
+            <div class="stat-box">
+                <div class="icon" id="badgeIcon">🌱</div>
+                <div class="label">Tu Insignia</div>
+                <div class="value" id="badgeName" style="font-size: 18px;">Reciclador Novato</div>
+            </div>
+        </div>
+
+        <!-- Materials Section -->
+        <div class="materials-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+                <h2 style="margin: 0;">📦 Materiales Reciclables</h2>
+                <div id="materialsCounter" style="background: #e8f5e9; padding: 10px 20px; border-radius: 20px; display: none;">
+                    <span style="color: #28a745; font-weight: bold;">
+                        <span id="counterNumber">0</span> materiales agregados
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Plástico -->
+            <div class="material-item">
+                <div class="material-icon">🍾</div>
+                <div class="material-info">
+                    <div class="material-name">Plástico (PET, HDPE)</div>
+                    <div class="material-rate">5 puntos por kilogramo</div>
+                </div>
+                <div class="weight-input">
+                    <input type="number" id="plastic-weight" min="0" step="0.1" value="0" oninput="calculatePoints('plastic')">
+                    <label>kg</label>
+                </div>
+                <div class="points-display">
+                    <div class="points" id="plastic-points">0</div>
+                    <div class="label">puntos</div>
+                </div>
+                <button class="add-button" onclick="addMaterial('plastic')">Agregar</button>
+            </div>
+
+            <!-- Papel y Cartón -->
+            <div class="material-item">
+                <div class="material-icon">📄</div>
+                <div class="material-info">
+                    <div class="material-name">Papel y Cartón</div>
+                    <div class="material-rate">3 puntos por kilogramo</div>
+                </div>
+                <div class="weight-input">
+                    <input type="number" id="paper-weight" min="0" step="0.1" value="0" oninput="calculatePoints('paper')">
+                    <label>kg</label>
+                </div>
+                <div class="points-display">
+                    <div class="points" id="paper-points">0</div>
+                    <div class="label">puntos</div>
+                </div>
+                <button class="add-button" onclick="addMaterial('paper')">Agregar</button>
+            </div>
+
+            <!-- Vidrio -->
+            <div class="material-item">
+                <div class="material-icon">🍷</div>
+                <div class="material-info">
+                    <div class="material-name">Vidrio</div>
+                    <div class="material-rate">8 puntos por kilogramo</div>
+                </div>
+                <div class="weight-input">
+                    <input type="number" id="glass-weight" min="0" step="0.1" value="0" oninput="calculatePoints('glass')">
+                    <label>kg</label>
+                </div>
+                <div class="points-display">
+                    <div class="points" id="glass-points">0</div>
+                    <div class="label">puntos</div>
+                </div>
+                <button class="add-button" onclick="addMaterial('glass')">Agregar</button>
+            </div>
+
+            <!-- Metal (Aluminio) -->
+            <div class="material-item">
+                <div class="material-icon">🥫</div>
+                <div class="material-info">
+                    <div class="material-name">Metal (Aluminio, Latas)</div>
+                    <div class="material-rate">12 puntos por kilogramo</div>
+                </div>
+                <div class="weight-input">
+                    <input type="number" id="metal-weight" min="0" step="0.1" value="0" oninput="calculatePoints('metal')">
+                    <label>kg</label>
+                </div>
+                <div class="points-display">
+                    <div class="points" id="metal-points">0</div>
+                    <div class="label">puntos</div>
+                </div>
+                <button class="add-button" onclick="addMaterial('metal')">Agregar</button>
+            </div>
+
+            <!-- Electrónicos -->
+            <div class="material-item">
+                <div class="material-icon">🔋</div>
+                <div class="material-info">
+                    <div class="material-name">Electrónicos y Baterías</div>
+                    <div class="material-rate">25 puntos por kilogramo</div>
+                </div>
+                <div class="weight-input">
+                    <input type="number" id="electronic-weight" min="0" step="0.1" value="0" oninput="calculatePoints('electronic')">
+                    <label>kg</label>
+                </div>
+                <div class="points-display">
+                    <div class="points" id="electronic-points">0</div>
+                    <div class="label">puntos</div>
+                </div>
+                <button class="add-button" onclick="addMaterial('electronic')">Agregar</button>
+            </div>
+
+            <!-- Orgánicos -->
+            <div class="material-item">
+                <div class="material-icon">🌿</div>
+                <div class="material-info">
+                    <div class="material-name">Residuos Orgánicos (Compost)</div>
+                    <div class="material-rate">2 puntos por kilogramo</div>
+                </div>
+                <div class="weight-input">
+                    <input type="number" id="organic-weight" min="0" step="0.1" value="0" oninput="calculatePoints('organic')">
+                    <label>kg</label>
+                </div>
+                <div class="points-display">
+                    <div class="points" id="organic-points">0</div>
+                    <div class="label">puntos</div>
+                </div>
+                <button class="add-button" onclick="addMaterial('organic')">Agregar</button>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="summary-section" id="summarySection" style="display: none;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="margin-bottom: 10px;">📊 Resumen de Reciclaje</h2>
+                <p style="font-size: 14px; opacity: 0.9; margin: 0;">
+                    👇 Revisa tu resumen y haz clic en "Reciclar Todo" para ganar tus puntos
+                </p>
+            </div>
+            <div class="summary-items" id="summaryItems"></div>
+            <div class="summary-total">
+                <span>TOTAL A GANAR</span>
+                <span><span id="summaryPoints">0</span> puntos</span>
+            </div>
+            <div class="action-buttons">
+                <button class="btn-clear" onclick="clearSummary()">🗑️ Limpiar</button>
+                <button class="btn-recycle" onclick="recycleAll()">♻️ Reciclar Todo y Ganar Puntos</button>
+            </div>
+        </div>
+
+        <!-- Badge Display -->
+        <div class="badge-display">
+            <div class="current-badge" id="currentBadgeIcon">🌱</div>
+            <div class="badge-name" id="currentBadgeName">Reciclador Novato</div>
+            <div class="badge-description" id="currentBadgeDesc">0 - 99 puntos</div>
+        </div>
+    </div>
+
+    <script src="../../public/js/auth.js"></script>
+    <script src="../../public/js/badges.js"></script>
+    <script>
+        // Sistema de reciclaje
+        const materials = {
+            plastic: { name: 'Plástico', icon: '🍾', pointsPerKg: 5, weight: 0, points: 0 },
+            paper: { name: 'Papel y Cartón', icon: '📄', pointsPerKg: 3, weight: 0, points: 0 },
+            glass: { name: 'Vidrio', icon: '🍷', pointsPerKg: 8, weight: 0, points: 0 },
+            metal: { name: 'Metal', icon: '🥫', pointsPerKg: 12, weight: 0, points: 0 },
+            electronic: { name: 'Electrónicos', icon: '🔋', pointsPerKg: 25, weight: 0, points: 0 },
+            organic: { name: 'Orgánicos', icon: '🌿', pointsPerKg: 2, weight: 0, points: 0 }
+        };
+
+        let totalPointsAccumulated = 0;
+        let totalWeightRecycled = 0;
+        let currentUser = null;
+
+        // Inicializar y verificar usuario
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Verificar si hay usuario logueado
+            const user = getUser();
+            if (user) {
+                currentUser = user;
+                totalPointsAccumulated = user.credits || 0;
+                document.getElementById('totalPoints').textContent = totalPointsAccumulated;
+                console.log('✅ Usuario cargado:', user.name, '- Puntos:', totalPointsAccumulated);
+            } else {
+                console.log('⚠️ No hay usuario logueado - usando modo simulación');
+                // Cargar del localStorage para modo simulación
+                const saved = localStorage.getItem('simulation_points');
+                if (saved) {
+                    totalPointsAccumulated = parseInt(saved);
+                    document.getElementById('totalPoints').textContent = totalPointsAccumulated;
+                }
+            }
+            updateBadge();
+        });
+
+        // Calcular puntos en tiempo real
+        function calculatePoints(materialId) {
+            const weight = parseFloat(document.getElementById(materialId + '-weight').value) || 0;
+            const points = Math.round(weight * materials[materialId].pointsPerKg);
+            document.getElementById(materialId + '-points').textContent = points;
+        }
+
+        // Agregar material al resumen
+        function addMaterial(materialId) {
+            const weight = parseFloat(document.getElementById(materialId + '-weight').value) || 0;
+            
+            if (weight <= 0) {
+                alert('⚠️ Por favor ingresa un peso válido mayor a 0 kg');
+                return;
+            }
+
+            const points = Math.round(weight * materials[materialId].pointsPerKg);
+            materials[materialId].weight += weight;
+            materials[materialId].points += points;
+
+            // Mostrar mensaje de confirmación
+            const materialName = materials[materialId].name;
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.innerHTML = `
+                <strong>✅ Material agregado</strong><br>
+                ${weight} kg de ${materialName} (+${points} puntos)
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 2500);
+
+            updateSummary();
+            
+            // Limpiar input
+            document.getElementById(materialId + '-weight').value = 0;
+            document.getElementById(materialId + '-points').textContent = 0;
+        }
+
+        // Actualizar resumen
+        function updateSummary() {
+            const summarySection = document.getElementById('summarySection');
+            const summaryItems = document.getElementById('summaryItems');
+            const materialsCounter = document.getElementById('materialsCounter');
+            const counterNumber = document.getElementById('counterNumber');
+            
+            let html = '';
+            let totalPoints = 0;
+            let totalWeight = 0;
+            let itemCount = 0;
+
+            for (let key in materials) {
+                if (materials[key].weight > 0) {
+                    itemCount++;
+                    html += `
+                        <div class="summary-item">
+                            <span>${materials[key].icon} ${materials[key].name}: ${materials[key].weight.toFixed(1)} kg</span>
+                            <span>${materials[key].points} pts</span>
+                        </div>
+                    `;
+                    totalPoints += materials[key].points;
+                    totalWeight += materials[key].weight;
+                }
+            }
+
+            if (itemCount > 0) {
+                summarySection.style.display = 'block';
+                summaryItems.innerHTML = html;
+                document.getElementById('summaryPoints').textContent = totalPoints;
+                
+                // Mostrar contador
+                materialsCounter.style.display = 'block';
+                counterNumber.textContent = itemCount;
+                
+                // Scroll suave hacia el resumen
+                setTimeout(() => {
+                    summarySection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            } else {
+                summarySection.style.display = 'none';
+                materialsCounter.style.display = 'none';
+            }
+        }
+
+        // Limpiar resumen
+        function clearSummary() {
+            if (!confirm('¿Deseas limpiar el resumen actual?')) return;
+            
+            for (let key in materials) {
+                materials[key].weight = 0;
+                materials[key].points = 0;
+            }
+            updateSummary();
+        }
+
+        // Reciclar todo
+        async function recycleAll() {
+            let totalPoints = 0;
+            let totalWeight = 0;
+
+            for (let key in materials) {
+                totalPoints += materials[key].points;
+                totalWeight += materials[key].weight;
+            }
+
+            if (totalPoints === 0) {
+                alert('No hay materiales para reciclar');
+                return;
+            }
+
+            // Si hay usuario logueado, actualizar en el servidor
+            if (currentUser) {
+                try {
+                    console.log('🔄 Enviando puntos al servidor...');
+                    console.log('Usuario ID:', currentUser.id);
+                    console.log('Puntos a agregar:', totalPoints);
+                    console.log('Token:', getToken() ? 'Presente' : 'FALTA');
+
+                    const response = await fetch('http://localhost:3000/api/actualizar-puntos', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${getToken()}`
+                        },
+                        body: JSON.stringify({
+                            userId: currentUser.id,
+                            pointsToAdd: totalPoints
+                        })
+                    });
+
+                    console.log('📡 Respuesta del servidor - Status:', response.status);
+                    const data = await response.json();
+                    console.log('📦 Datos recibidos:', data);
+                    
+                    if (response.ok) {
+                        // Actualizar puntos totales acumulados
+                        totalPointsAccumulated = data.newTotal;
+                        totalWeightRecycled += totalWeight;
+                        
+                        // Actualizar usuario en localStorage
+                        currentUser.credits = data.newTotal;
+                        currentUser.total_earned = data.totalEarned;
+                        saveUser(currentUser);
+                        
+                        console.log('✅ Puntos actualizados exitosamente!');
+                        console.log('   - Puntos anteriores:', data.previousTotal);
+                        console.log('   - Puntos agregados:', data.pointsAdded);
+                        console.log('   - Nuevo total:', data.newTotal);
+                        console.log('   - Total histórico:', data.totalEarned);
+                        
+                        // Actualizar estadísticas en pantalla
+                        document.getElementById('totalPoints').textContent = totalPointsAccumulated;
+                        document.getElementById('totalWeight').textContent = totalWeightRecycled.toFixed(1);
+
+                        // Actualizar insignia
+                        updateBadge();
+
+                        // Limpiar
+                        for (let key in materials) {
+                            materials[key].weight = 0;
+                            materials[key].points = 0;
+                        }
+                        updateSummary();
+
+                        // Actualizar UI de autenticación para mostrar nuevos puntos
+                        updateAuthUI();
+
+                        alert(`¡Excelente! Has ganado ${totalPoints} puntos\n\nUsuario: ${currentUser.name}\nTotal acumulado: ${totalPointsAccumulated} puntos`);
+                    } else {
+                        console.error('❌ Error al actualizar puntos:', data.error);
+                        alert('Error al actualizar puntos en el servidor: ' + data.error);
+                    }
+                } catch (error) {
+                    console.error('❌ Error de conexión:', error);
+                    alert('Error de conexión con el servidor: ' + error.message);
+                }
+            } else {
+                alert('⚠️ Debes iniciar sesión para reciclar y ganar puntos reales');
+            }
+        }
+
+        // Actualizar insignia
+        function updateBadge() {
+            if (typeof getBadgeByPoints === 'function') {
+                const badge = getBadgeByPoints(totalPointsAccumulated);
+                document.getElementById('badgeIcon').textContent = badge.icon;
+                document.getElementById('badgeName').textContent = badge.name;
+                document.getElementById('currentBadgeIcon').textContent = badge.icon;
+                document.getElementById('currentBadgeName').textContent = badge.name;
+                document.getElementById('currentBadgeDesc').textContent = 
+                    badge.maxPoints === Infinity ? 
+                    `${badge.minPoints}+ puntos` : 
+                    `${badge.minPoints} - ${badge.maxPoints} puntos`;
+            }
+        }
+    </script>
+</body>
+</html>

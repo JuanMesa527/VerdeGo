@@ -55,6 +55,7 @@ function initializeDatabase() {
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
             credits INTEGER DEFAULT 0,
+            total_earned INTEGER DEFAULT 0,
             rank_id INTEGER,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (rank_id) REFERENCES ranks(id)
@@ -64,6 +65,25 @@ function initializeDatabase() {
             console.error('❌ Error al crear tabla users:', err.message);
         } else {
             console.log('✅ Tabla users verificada/creada');
+            
+            // Agregar columna total_earned si no existe (migración segura)
+            db.run(`ALTER TABLE users ADD COLUMN total_earned INTEGER DEFAULT 0`, (alterErr) => {
+                if (alterErr) {
+                    // La columna ya existe, no es un error
+                    if (alterErr.message.includes('duplicate column name')) {
+                        console.log('✅ Columna total_earned ya existe');
+                    }
+                } else {
+                    console.log('✅ Columna total_earned agregada');
+                    
+                    // Inicializar total_earned con credits actuales para usuarios existentes
+                    db.run(`UPDATE users SET total_earned = credits WHERE total_earned = 0`, (updateErr) => {
+                        if (!updateErr) {
+                            console.log('✅ total_earned inicializado para usuarios existentes');
+                        }
+                    });
+                }
+            });
         }
     });
 
@@ -103,6 +123,49 @@ function initializeDatabase() {
             console.error('❌ Error al crear tabla transactions:', err.message);
         } else {
             console.log('✅ Tabla transactions verificada/creada');
+        }
+    });
+
+    // Tabla de bonos canjeados
+    db.run(`
+        CREATE TABLE IF NOT EXISTS redeemed_bonuses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            bonus_id TEXT NOT NULL,
+            bonus_brand TEXT NOT NULL,
+            bonus_value TEXT NOT NULL,
+            bonus_icon TEXT NOT NULL,
+            bonus_category TEXT NOT NULL,
+            points_cost INTEGER NOT NULL,
+            bonus_code TEXT NOT NULL,
+            redeemed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Error al crear tabla redeemed_bonuses:', err.message);
+        } else {
+            console.log('✅ Tabla redeemed_bonuses verificada/creada');
+        }
+    });
+
+    // Tabla de recargas TuLlave
+    db.run(`
+        CREATE TABLE IF NOT EXISTS recharges (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            card_number TEXT NOT NULL,
+            amount INTEGER NOT NULL,
+            points_used INTEGER NOT NULL,
+            transaction_id TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Error al crear tabla recharges:', err.message);
+        } else {
+            console.log('✅ Tabla recharges verificada/creada');
         }
     });
 }

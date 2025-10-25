@@ -1,0 +1,643 @@
+/* ============================================
+   MIS RECARGAS - ESTILOS
+   ============================================ */
+
+/* History Badge Counter */
+.history-badge {
+    display: inline-block;
+    background: #11998e;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-left: 10px;
+    min-width: 30px;
+    text-align: center;
+    animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Points Summary Card (reutiliza de bonuses pero personalizado) */
+.points-summary-card {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(17, 153, 142, 0.4);
+}
+
+.points-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.points-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.points-icon {
+    font-size: 32px;
+}
+
+.points-amount {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.conversion-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.conversion-rate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.conversion-icon {
+    font-size: 24px;
+}
+
+.conversion-value {
+    font-size: 16px;
+}
+
+/* Recharge Section */
+.recharge-section {
+    margin-bottom: 40px;
+}
+
+/* TuLlave Card */
+.tullave-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-visual {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px;
+    text-align: center;
+    color: white;
+}
+
+.card-icon {
+    font-size: 80px;
+    margin-bottom: 15px;
+}
+
+.card-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.card-subtitle {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* Recharge Form */
+.recharge-form {
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #11998e;
+    box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+}
+
+.form-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    color: #6c757d;
+}
+
+.amount-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 14px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #11998e;
+    pointer-events: none;
+}
+
+.amount-input {
+    padding-left: 35px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Quick Amount Buttons */
+.quick-amounts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.quick-btn {
+    padding: 12px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quick-btn:hover {
+    background: #11998e;
+    border-color: #11998e;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Calculation Card */
+.calculation-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.calc-label {
+    color: #6c757d;
+    font-size: 15px;
+}
+
+.calc-value {
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+}
+
+.calc-value.points-needed {
+    color: #11998e;
+}
+
+.calc-divider {
+    height: 1px;
+    background: #dee2e6;
+    margin: 10px 0;
+}
+
+.calc-row.total {
+    padding-top: 15px;
+}
+
+.calc-row.total .calc-label,
+.calc-row.total .calc-value {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.calc-row.total .calc-value {
+    color: #11998e;
+}
+
+/* Recharge Button */
+.btn-recharge {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-recharge:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+}
+
+.btn-recharge:disabled {
+    background: #e9ecef;
+    color: #adb5bd;
+    cursor: not-allowed;
+}
+
+/* History Section */
+.history-section {
+    margin-top: 40px;
+}
+
+.history-list {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+    transition: background 0.2s ease;
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-item:hover {
+    background: #f8f9fa;
+}
+
+/* Animación para el nuevo elemento del historial */
+.history-item-new {
+    animation: slideInFromTop 0.5s ease-out, highlightNew 2s ease-out;
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes highlightNew {
+    0% {
+        background: #d4edda;
+    }
+    100% {
+        background: transparent;
+    }
+}
+
+.history-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.history-icon {
+    font-size: 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.history-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.history-card {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
+.history-date {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.history-transaction {
+    font-size: 13px;
+    color: #11998e;
+    font-family: monospace;
+}
+
+.history-values {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.history-amount {
+    font-weight: bold;
+    color: #11998e;
+    font-size: 20px;
+}
+
+.history-points {
+    font-weight: 600;
+    color: #dc3545;
+    font-size: 16px;
+}
+
+/* Botón Ver Más */
+.btn-show-more {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-show-more:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+}
+
+.btn-show-more:active {
+    transform: translateY(0);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.empty-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal-content.success {
+    text-align: center;
+}
+
+.success-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bounce 0.6s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.modal-title {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.modal-body {
+    margin-bottom: 25px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.modal-recharge-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.modal-recharge-card {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+}
+
+.modal-recharge-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 15px;
+}
+
+.modal-detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.modal-detail-row:last-child {
+    border-bottom: none;
+    padding-top: 12px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-cancel,
+.btn-confirm {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.btn-cancel:hover {
+    background: #dee2e6;
+}
+
+.btn-confirm {
+    background: #11998e;
+    color: white;
+}
+
+.btn-confirm:hover {
+    background: #0e7c6f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .conversion-info {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .quick-amounts {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .history-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .history-values {
+        align-items: flex-start;
+    }
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.empty-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.empty-state p:first-of-type {
+    font-weight: bold;
+    color: #495057;
+    font-size: 18px;
+}
+
+/* Modal Detail Rows */
+.modal-detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.modal-detail-row:last-child {
+    border-bottom: none;
+    padding-top: 15px;
+    margin-top: 10px;
+    border-top: 2px solid #11998e;
+}
