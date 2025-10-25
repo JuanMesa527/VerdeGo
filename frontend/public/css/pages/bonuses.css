@@ -1,0 +1,528 @@
+/* ============================================
+   MIS BONOS - ESTILOS
+   ============================================ */
+
+/* Points Summary Card */
+.points-summary-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+}
+
+.points-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.points-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.points-icon {
+    font-size: 32px;
+}
+
+.points-amount {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.points-history {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.history-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.history-label {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.history-value {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Bonuses Section */
+.bonuses-section {
+    margin-bottom: 40px;
+}
+
+.section-header {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.title-icon {
+    font-size: 32px;
+}
+
+.section-subtitle {
+    color: #6c757d;
+    font-size: 16px;
+    margin: 0;
+    padding-left: 44px;
+    line-height: 1.5;
+}
+.category-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    background: white;
+    border: 2px solid #dee2e6;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.tab-btn.active {
+    background: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+/* Bonuses Grid */
+.bonuses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.bonus-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.bonus-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.bonus-card.locked {
+    opacity: 0.7;
+}
+
+.bonus-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.bonus-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.bonus-brand {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.bonus-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.bonus-body {
+    padding: 20px;
+}
+
+.bonus-description {
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.bonus-points {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.points-cost {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+    color: #28a745;
+    font-size: 18px;
+}
+
+.bonus-status {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.bonus-status.available {
+    background: #d4edda;
+    color: #155724;
+}
+
+.bonus-status.locked {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.bonus-footer {
+    padding: 0 20px 20px;
+}
+
+.btn-redeem {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-redeem.available {
+    background: #28a745;
+    color: white;
+}
+
+.btn-redeem.available:hover {
+    background: #218838;
+    transform: scale(1.02);
+}
+
+.btn-redeem.locked {
+    background: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Category Specific Colors */
+.bonus-card[data-category="ropa"] .bonus-header {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.bonus-card[data-category="comida"] .bonus-header {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.bonus-card[data-category="tecnologia"] .bonus-header {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.bonus-card[data-category="entretenimiento"] .bonus-header {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* Redeemed Section */
+.redeemed-section {
+    margin-top: 40px;
+}
+
+.redeemed-list {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.redeemed-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    transition: background 0.2s ease;
+}
+
+.redeemed-item:last-child {
+    border-bottom: none;
+}
+
+.redeemed-item:hover {
+    background: #f8f9fa;
+}
+
+.redeemed-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.redeemed-icon {
+    font-size: 32px;
+}
+
+.redeemed-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.redeemed-brand {
+    font-weight: bold;
+    color: #333;
+}
+
+.redeemed-date {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.redeemed-cost {
+    font-weight: bold;
+    color: #dc3545;
+    font-size: 18px;
+}
+
+/* Botón Ver Más */
+.btn-show-more {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-show-more:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+}
+
+.btn-show-more:active {
+    transform: translateY(0);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 15px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal-content.success {
+    text-align: center;
+}
+
+.success-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bounce 0.6s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.modal-title {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.modal-body {
+    margin-bottom: 25px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.modal-bonus-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.modal-bonus-brand {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.modal-bonus-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.modal-points-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background: #fff3cd;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-cancel,
+.btn-confirm {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.btn-cancel:hover {
+    background: #dee2e6;
+}
+
+.btn-confirm {
+    background: #28a745;
+    color: white;
+}
+
+.btn-confirm:hover {
+    background: #218838;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .points-history {
+        grid-template-columns: 1fr;
+    }
+
+    .bonuses-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+
+    .redeemed-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}

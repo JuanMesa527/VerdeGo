@@ -73,6 +73,8 @@ async function login(req, res) {
             users.email, 
             users.password,
             users.credits,
+            users.total_earned,
+            users.created_at,
             ranks.name as rank_name
         FROM users
         LEFT JOIN ranks ON users.rank_id = ranks.id
@@ -122,7 +124,8 @@ async function login(req, res) {
                     surname: user.surname,
                     email: user.email,
                     credits: user.credits,
-                    rank_name: user.rank_name
+                    rank_name: user.rank_name,
+                    created_at: user.created_at
                 }
             });
         } catch (error) {

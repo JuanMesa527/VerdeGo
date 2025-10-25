@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Bonos - VerdeGo</title>
+    <link rel="stylesheet" href="../../public/css/style.css">
+    <link rel="stylesheet" href="../../public/css/pages/account.css">
+    <link rel="stylesheet" href="../../public/css/pages/bonuses.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../../public/assets/logo.jpg" alt="VerdeGo Logo" onclick="window.location.href='../../index.html'">
+            </div>
+            <nav class="nav-buttons">
+                <button class="nav-btn" onclick="window.location.href='../../index.html'">Inicio</button>
+                <button class="nav-btn">Servicios</button>
+                <button class="nav-btn">Nosotros</button>
+                <button class="nav-btn">Contacto</button>
+            </nav>
+            <div class="auth-buttons"></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="account-main">
+        <div class="account-container">
+            <!-- Sidebar -->
+            <aside class="account-sidebar">
+                <nav class="sidebar-nav">
+                    <a href="account.html" class="sidebar-item">
+                        <span class="sidebar-icon">👤</span>
+                        <span class="sidebar-text">Mi Perfil</span>
+                    </a>
+                    <a href="bonuses.html" class="sidebar-item active">
+                        <span class="sidebar-icon">🎁</span>
+                        <span class="sidebar-text">Mis Bonos</span>
+                    </a>
+                    <a href="recharges.html" class="sidebar-item">
+                        <span class="sidebar-icon">💳</span>
+                        <span class="sidebar-text">Mis Recargas</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="account-content">
+                <!-- Points Summary Card -->
+                <div class="points-summary-card">
+                    <div class="points-info">
+                        <div class="points-label">
+                            <span class="points-icon">⭐</span>
+                            <span>Tus Puntos Disponibles</span>
+                        </div>
+                        <div class="points-amount" id="userPoints">0</div>
+                    </div>
+                    <div class="points-history">
+                        <div class="history-item">
+                            <span class="history-label">Total Ganado:</span>
+                            <span class="history-value" id="totalEarned">0 pts</span>
+                        </div>
+                        <div class="history-item">
+                            <span class="history-label">Total Canjeado:</span>
+                            <span class="history-value" id="totalRedeemed">0 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bonuses Section -->
+                <div class="bonuses-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">🎁</span>
+                            <span>Bonos Disponibles</span>
+                        </h2>
+                        <p class="section-subtitle">Canjea tus puntos por bonos de marcas colombianas reconocidas</p>
+                    </div>
+
+                    <!-- Category Tabs -->
+                    <div class="category-tabs">
+                        <button class="tab-btn active" onclick="filterCategory('all')">
+                            🌟 Todos
+                        </button>
+                        <button class="tab-btn" onclick="filterCategory('ropa')">
+                            👕 Ropa
+                        </button>
+                        <button class="tab-btn" onclick="filterCategory('comida')">
+                            🍔 Comida
+                        </button>
+                        <button class="tab-btn" onclick="filterCategory('tecnologia')">
+                            💻 Tecnología
+                        </button>
+                        <button class="tab-btn" onclick="filterCategory('entretenimiento')">
+                            🎬 Entretenimiento
+                        </button>
+                    </div>
+
+                    <!-- Bonuses Grid -->
+                    <div class="bonuses-grid" id="bonusesGrid">
+                        <!-- Se llenará con JavaScript -->
+                    </div>
+                </div>
+
+                <!-- My Redeemed Bonuses -->
+                <div class="redeemed-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">📜</span>
+                            <span>Mis Bonos Canjeados</span>
+                        </h2>
+                        <p class="section-subtitle">Revisa el historial de bonos que has canjeado y sus códigos</p>
+                    </div>
+                    <div class="redeemed-list" id="redeemedList">
+                        <!-- Se llenará con JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-title">🎁 Confirmar Canje</h2>
+            <div class="modal-body" id="modalBody">
+                <!-- Se llenará dinámicamente -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="btn-confirm" onclick="confirmRedeem()">Confirmar Canje</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Éxito -->
+    <div id="successModal" class="modal">
+        <div class="modal-content success">
+            <div class="success-icon">🎉</div>
+            <h2 class="modal-title">¡Felicitaciones!</h2>
+            <div class="modal-body" id="successBody">
+                <!-- Se llenará dinámicamente -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn-confirm" onclick="closeSuccessModal()">¡Genial!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../public/js/auth.js"></script>
+    <script src="../../public/js/badges.js"></script>
+    <script src="../../public/js/pages/bonuses.js"></script>
+</body>
+</html>

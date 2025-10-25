@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Recargas - VerdeGo</title>
+    <link rel="stylesheet" href="../../public/css/style.css">
+    <link rel="stylesheet" href="../../public/css/pages/account.css">
+    <link rel="stylesheet" href="../../public/css/pages/recharges.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../../public/assets/logo.jpg" alt="VerdeGo Logo" onclick="window.location.href='../../index.html'">
+            </div>
+            <nav class="nav-buttons">
+                <button class="nav-btn" onclick="window.location.href='../../index.html'">Inicio</button>
+                <button class="nav-btn">Servicios</button>
+                <button class="nav-btn">Nosotros</button>
+                <button class="nav-btn">Contacto</button>
+            </nav>
+            <div class="auth-buttons"></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="account-main">
+        <div class="account-container">
+            <!-- Sidebar -->
+            <aside class="account-sidebar">
+                <nav class="sidebar-nav">
+                    <a href="account.html" class="sidebar-item">
+                        <span class="sidebar-icon">👤</span>
+                        <span class="sidebar-text">Mi Perfil</span>
+                    </a>
+                    <a href="bonuses.html" class="sidebar-item">
+                        <span class="sidebar-icon">🎁</span>
+                        <span class="sidebar-text">Mis Bonos</span>
+                    </a>
+                    <a href="recharges.html" class="sidebar-item active">
+                        <span class="sidebar-icon">💳</span>
+                        <span class="sidebar-text">Mis Recargas</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="account-content">
+                <!-- Points Summary Card -->
+                <div class="points-summary-card">
+                    <div class="points-info">
+                        <div class="points-label">
+                            <span class="points-icon">⭐</span>
+                            <span>Tus Puntos Disponibles</span>
+                        </div>
+                        <div class="points-amount" id="userPoints">0</div>
+                    </div>
+                    <div class="conversion-info">
+                        <div class="conversion-rate">
+                            <span class="conversion-icon">💰</span>
+                            <span>1 punto = $10 COP</span>
+                        </div>
+                        <div class="conversion-value">
+                            Puedes recargar hasta: <strong id="maxRecharge">$0</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TuLlave Recharge Section -->
+                <div class="recharge-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">🚌</span>
+                            <span>Recarga tu Tarjeta TuLlave</span>
+                        </h2>
+                        <p class="section-subtitle">Convierte tus puntos en saldo para tu tarjeta de transporte</p>
+                    </div>
+
+                    <!-- Recharge Card -->
+                    <div class="tullave-card">
+                        <div class="card-visual">
+                            <div class="card-icon">🚌</div>
+                            <h3 class="card-title">Tarjeta TuLlave</h3>
+                            <p class="card-subtitle">Sistema Integrado de Transporte Público</p>
+                        </div>
+
+                        <div class="recharge-form">
+                            <div class="form-group">
+                                <label class="form-label">Número de Tarjeta TuLlave</label>
+                                <input 
+                                    type="text" 
+                                    id="cardNumber" 
+                                    class="form-input" 
+                                    placeholder="1234 5678 9012 3456"
+                                    maxlength="19"
+                                    pattern="[0-9\s]*"
+                                    oninput="formatCardNumber(this)"
+                                />
+                                <small class="form-hint">Ingresa los 16 dígitos de tu tarjeta</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Monto a Recargar (COP)</label>
+                                <div class="amount-input-group">
+                                    <span class="currency-symbol">$</span>
+                                    <input 
+                                        type="number" 
+                                        id="rechargeAmount" 
+                                        class="form-input amount-input" 
+                                        placeholder="100"
+                                        min="100"
+                                        max="10000"
+                                        step="100"
+                                        oninput="calculatePoints()"
+                                    />
+                                </div>
+                                <small class="form-hint">Mínimo: $100 COP - Máximo: $10.000 COP</small>
+                            </div>
+
+                            <!-- Quick Amount Buttons -->
+                            <div class="quick-amounts">
+                                <button class="quick-btn" onclick="setAmount(1000)">$1.000</button>
+                                <button class="quick-btn" onclick="setAmount(2000)">$2.000</button>
+                                <button class="quick-btn" onclick="setAmount(5000)">$5.000</button>
+                                <button class="quick-btn" onclick="setAmount(10000)">$10.000</button>
+                            </div>
+
+                            <!-- Calculation Display -->
+                            <div class="calculation-card" id="calculationCard" style="display: none;">
+                                <div class="calc-row">
+                                    <span class="calc-label">Monto a recargar:</span>
+                                    <span class="calc-value" id="displayAmount">$0</span>
+                                </div>
+                                <div class="calc-row">
+                                    <span class="calc-label">Puntos necesarios:</span>
+                                    <span class="calc-value points-needed" id="pointsNeeded">0 pts</span>
+                                </div>
+                                <div class="calc-row">
+                                    <span class="calc-label">Puntos disponibles:</span>
+                                    <span class="calc-value" id="pointsAvailable">0 pts</span>
+                                </div>
+                                <div class="calc-divider"></div>
+                                <div class="calc-row total">
+                                    <span class="calc-label">Puntos restantes:</span>
+                                    <span class="calc-value" id="remainingPoints">0 pts</span>
+                                </div>
+                            </div>
+
+                            <!-- Recharge Button -->
+                            <button class="btn-recharge" id="rechargeBtn" onclick="processRecharge()" disabled>
+                                💳 Procesar Recarga
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recharge History -->
+                <div class="history-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">📜</span>
+                            <span>Historial de Recargas</span>
+                            <span class="history-badge" id="historyBadge">0</span>
+                        </h2>
+                        <p class="section-subtitle">Revisa todas las recargas que has realizado</p>
+                    </div>
+                    <div class="history-list" id="historyList">
+                        <!-- Se llenará con JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-title">🚌 Confirmar Recarga</h2>
+            <div class="modal-body" id="modalBody">
+                <!-- Se llenará dinámicamente -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="btn-confirm" onclick="confirmRecharge()">Confirmar Recarga</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Éxito -->
+    <div id="successModal" class="modal">
+        <div class="modal-content success">
+            <div class="success-icon">🎉</div>
+            <h2 class="modal-title">¡Recarga Exitosa!</h2>
+            <div class="modal-body" id="successBody">
+                <!-- Se llenará dinámicamente -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn-confirm" onclick="closeSuccessModal()">¡Perfecto!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../public/js/auth.js"></script>
+    <script src="../../public/js/pages/recharges.js"></script>
+</body>
+</html>

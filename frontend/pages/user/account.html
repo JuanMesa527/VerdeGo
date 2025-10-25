@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta - VerdeGo</title>
+    <link rel="stylesheet" href="../../public/css/style.css">
+    <link rel="stylesheet" href="../../public/css/pages/account.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../../public/assets/logo.jpg" alt="VerdeGo Logo" onclick="window.location.href='../../index.html'">
+            </div>
+            <nav class="nav-buttons">
+                <button class="nav-btn" onclick="window.location.href='../../index.html'">Inicio</button>
+                <button class="nav-btn">Servicios</button>
+                <button class="nav-btn">Nosotros</button>
+                <button class="nav-btn">Contacto</button>
+            </nav>
+            <div class="auth-buttons">
+                <!-- Se llenará con JavaScript -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="account-main">
+        <div class="account-container">
+            <!-- Sidebar -->
+            <aside class="account-sidebar">
+                <nav class="sidebar-nav">
+                    <a href="account.html" class="sidebar-item active">
+                        <span class="sidebar-icon">👤</span>
+                        <span class="sidebar-text">Mi Perfil</span>
+                    </a>
+                    <a href="bonuses.html" class="sidebar-item">
+                        <span class="sidebar-icon">🎁</span>
+                        <span class="sidebar-text">Mis Bonos</span>
+                    </a>
+                    <a href="recharges.html" class="sidebar-item">
+                        <span class="sidebar-icon">💳</span>
+                        <span class="sidebar-text">Mis Recargas</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="account-content">
+                <!-- Profile Card -->
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar-container">
+                            <div class="profile-avatar" id="profileAvatar">
+                                <span id="avatarInitials">?</span>
+                            </div>
+                            <button class="change-photo-btn" onclick="changeProfilePhoto()">
+                                📷 Cambiar foto
+                            </button>
+                        </div>
+                        <div class="profile-info">
+                            <h1 class="profile-name" id="profileName">Cargando...</h1>
+                            <p class="profile-email" id="profileEmail">correo@ejemplo.com</p>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <span class="stat-icon">⭐</span>
+                                    <span class="stat-label">Puntos Disponibles</span>
+                                    <span class="stat-value" id="profilePoints">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-icon">🏆</span>
+                                    <span class="stat-label">Total Ganado</span>
+                                    <span class="stat-value" id="profileTotalEarned">0</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-icon">📅</span>
+                                    <span class="stat-label">Miembro desde</span>
+                                    <span class="stat-value" id="memberSince">2024</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Badge Section -->
+                <div class="badge-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">🏆</span>
+                            Tu Insignia Actual
+                        </h2>
+                    </div>
+                    
+                    <div class="current-badge-card" id="currentBadgeCard">
+                        <!-- Se llenará con JavaScript -->
+                    </div>
+
+                    <!-- Progress to Next Badge -->
+                    <div class="badge-progress-card" id="badgeProgressCard">
+                        <!-- Se llenará con JavaScript -->
+                    </div>
+
+                    <!-- All Badges -->
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">🎯</span>
+                            Sistema de Insignias
+                        </h2>
+                        <p class="section-subtitle">Gana más puntos para desbloquear nuevas insignias</p>
+                    </div>
+                    
+                    <div class="all-badges-grid" id="allBadgesGrid">
+                        <!-- Se llenará con JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Account Details -->
+                <div class="account-details-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">📋</span>
+                            Información de la Cuenta
+                        </h2>
+                    </div>
+                    
+                    <div class="details-card">
+                        <div class="detail-item">
+                            <label class="detail-label">Cédula</label>
+                            <p class="detail-value" id="userId">-</p>
+                        </div>
+                        <div class="detail-item">
+                            <label class="detail-label">Nombre Completo</label>
+                            <p class="detail-value" id="userFullName">-</p>
+                        </div>
+                        <div class="detail-item">
+                            <label class="detail-label">Correo Electrónico</label>
+                            <p class="detail-value" id="userEmail">-</p>
+                        </div>
+                        <div class="detail-item">
+                            <label class="detail-label">Puntos Disponibles</label>
+                            <p class="detail-value points" id="userCredits">0 puntos</p>
+                        </div>
+                        <div class="detail-item">
+                            <label class="detail-label">Total de Puntos Ganados</label>
+                            <p class="detail-value points" id="userTotalEarned">0 puntos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../../public/js/auth.js"></script>
+    <script src="../../public/js/badges.js"></script>
+    <script src="../../public/js/pages/account.js"></script>
+</body>
+</html>
