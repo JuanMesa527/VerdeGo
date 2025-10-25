@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de API - VerdeGo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .result {
+            background: white;
+            padding: 15px;
+            margin-top: 10px;
+            border-left: 4px solid #28a745;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Prueba de Comunicación Frontend ↔ Backend</h1>
+
+    <div class="test-section">
+        <h2>Test 1: Petición GET</h2>
+        <p>Hacer una petición GET al servidor para obtener datos</p>
+        <button onclick="testGet()">Hacer GET Request</button>
+        <div id="result-get" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Petición POST</h2>
+        <p>Enviar datos al servidor usando POST</p>
+        <input type="text" id="nombre" placeholder="Tu nombre" style="padding: 8px; width: 200px;">
+        <button onclick="testPost()">Hacer POST Request</button>
+        <div id="result-post" class="result"></div>
+    </div>
+
+    <script>
+        // Test 1: Petición GET
+        async function testGet() {
+            const resultDiv = document.getElementById('result-get');
+            resultDiv.textContent = 'Cargando...';
+            
+            try {
+                // fetch() = función de JavaScript para hacer peticiones HTTP
+                const response = await fetch('/api/test');
+                const data = await response.json();
+                
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Test 2: Petición POST
+        async function testPost() {
+            const resultDiv = document.getElementById('result-post');
+            const nombre = document.getElementById('nombre').value;
+            
+            if (!nombre) {
+                alert('Por favor escribe tu nombre');
+                return;
+            }
+            
+            resultDiv.textContent = 'Enviando datos...';
+            
+            try {
+                const response = await fetch('/api/test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        fecha: new Date().toISOString()
+                    })
+                });
+                
+                const data = await response.json();
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
