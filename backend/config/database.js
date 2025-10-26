@@ -1,14 +1,32 @@
 // ============================================
-// CONFIGURACIÓN DE BASE DE DATOS SQLite
+// CONFIGURACIÓN DE BASE DE DATOS SQLite3
 // ============================================
 
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
 // Ruta a la base de datos desde variable de entorno o usar default
-const DB_PATH = process.env.DB_PATH 
-    ? path.join(__dirname, '../../', process.env.DB_PATH)
-    : path.join(__dirname, '../../database/database.db');
+let DB_PATH;
+if (process.env.DB_PATH) {
+    // Si la ruta es absoluta, usarla directamente, si no, resolver relativa a la raíz del proyecto
+    DB_PATH = path.isAbsolute(process.env.DB_PATH)
+        ? process.env.DB_PATH
+        : path.join(__dirname, '../../', process.env.DB_PATH);
+} else {
+    DB_PATH = path.join(__dirname, '../../database/database.db');
+}
+
+// Asegurar que el directorio de la BD exista (evita errores de "unable to open database file")
+const dbDir = path.dirname(DB_PATH);
+try {
+    if (!fs.existsSync(dbDir)) {
+        fs.mkdirSync(dbDir, { recursive: true });
+        console.log('✅ Directorio de base de datos creado en:', dbDir);
+    }
+} catch (mkdirErr) {
+    console.error('❌ Error al crear directorio de la base de datos:', mkdirErr.message);
+}
 
 // Crear conexión a la base de datos
 const db = new sqlite3.Database(DB_PATH, (err) => {
