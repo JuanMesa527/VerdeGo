@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VerdeGo - Inicio</title>
     <link rel="stylesheet" href="public/css/style.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
 </head>
 <body>
     <header class="header">
@@ -26,13 +30,122 @@
     </header>
 
     <main>
-        
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            <div class="hero-content">
+                <div class="hero-badge fade-in">
+                    <span class="badge-icon">🌍</span>
+                    <span class="badge-text">Plataforma Líder en Reciclaje</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-emoji">🌿</span>
+                    <span class="title-text">Bienvenido a VerdeGo</span>
+                </h1>
+                <p class="hero-description">
+                    Descubre nuestros <span class="highlight">puntos de reciclaje</span> y 
+                    <span class="highlight">tiendas aliadas</span> en Bogotá. 
+                    Únete a la revolución verde y contribuye a un futuro más sostenible.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item slide-up" style="animation-delay: 0.2s">
+                        <div class="stat-icon">📍</div>
+                        <div class="stat-number" data-target="0">0</div>
+                        <div class="stat-label">Ubicaciones</div>
+                    </div>
+                    <div class="stat-item slide-up" style="animation-delay: 0.4s">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-number" data-target="0">0</div>
+                        <div class="stat-label">Usuarios Activos</div>
+                    </div>
+                    <div class="stat-item slide-up" style="animation-delay: 0.6s">
+                        <div class="stat-icon">🎁</div>
+                        <div class="stat-number" data-target="0">0</div>
+                        <div class="stat-label">Bonos Canjeados</div>
+                    </div>
+                </div>
+                <div class="hero-cta">
+                    <button class="cta-primary pulse" id="openMapModal">
+                        <span>Ver Mapa Interactivo</span>
+                        <span class="cta-icon">🗺️</span>
+                    </button>
+                </div>
+                <div class="hero-features">
+                    <div class="feature-tag">✅ Gana Puntos</div>
+                    <div class="feature-tag">✅ Canje de Bonos</div>
+                    <div class="feature-tag">✅ Impacto Ambiental</div>
+                </div>
+                
+                <!-- Info Cards dentro del Hero -->
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-icon">♻️</div>
+                        <h3>Recicla y Gana</h3>
+                        <p>Acumula puntos por cada acción de reciclaje en nuestros centros</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">🎁</div>
+                        <h3>Canjea Bonos</h3>
+                        <p>Usa tus puntos para obtener increíbles recompensas y descuentos</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">🌍</div>
+                        <h3>Ayuda al Planeta</h3>
+                        <p>Contribuye a un futuro más sostenible con cada acción</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal de Mapa -->
+        <div id="mapModal" class="map-modal">
+            <div class="map-modal-content">
+                <div class="map-modal-header">
+                    <h2>🗺️ Mapa de Ubicaciones VerdeGo</h2>
+                    <button class="map-modal-close" id="closeMapModal">
+                        <span>✕</span>
+                    </button>
+                </div>
+                <div class="map-modal-filters">
+                    <button class="modal-filter-btn active" data-type="all">
+                        <span>🗺️</span> Todas
+                    </button>
+                    <button class="modal-filter-btn" data-type="verdego">
+                        <span>♻️</span> Ubicaciones VerdeGo
+                    </button>
+                    <button class="modal-filter-btn" data-type="aliada">
+                        <span>🏪</span> Tiendas Aliadas
+                    </button>
+                </div>
+                <div id="modalMap" class="modal-map-container"></div>
+                <div class="map-modal-footer">
+                    <span class="modal-location-counter" id="modalLocationCount">Cargando...</span>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer>
-        
+        <div class="footer-content">
+            <p>&copy; 2025 VerdeGo - Todos los derechos reservados</p>
+        </div>
     </footer>
 
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+            crossorigin=""></script>
     <script src="public/js/auth.js"></script>
+    <script src="public/js/hero.js"></script>
+    <script src="public/js/map.js"></script>
 </body>
 </html>

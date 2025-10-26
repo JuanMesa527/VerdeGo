@@ -21,6 +21,7 @@ const rankController = require('./controllers/rankController');
 const pointsController = require('./controllers/pointsController');
 const bonusController = require('./controllers/bonusController');
 const rechargeController = require('./controllers/rechargeController');
+const statsController = require('./controllers/statsController');
 
 // Importar middleware
 const { verificarToken } = require('./middleware/auth');
@@ -89,6 +90,9 @@ app.post('/api/crear-recarga', verificarToken, rechargeController.createRecharge
 app.get('/api/recargas/:userId', rechargeController.getUserRecharges);
 app.get('/api/estadisticas-recargas/:userId', rechargeController.getRechargeStats);
 app.post('/api/verificar-puntos', rechargeController.checkPointsAvailability);
+
+// Rutas de estadísticas generales
+app.get('/api/stats', statsController.getStats);
 
 // ============================================
 // RUTA PARA SERVIR EL FRONTEND
