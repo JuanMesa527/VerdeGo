@@ -21,6 +21,7 @@ const rankController = require('./controllers/rankController');
 const pointsController = require('./controllers/pointsController');
 const bonusController = require('./controllers/bonusController');
 const rechargeController = require('./controllers/rechargeController');
+const competitionController = require('./controllers/competitionController');
 
 // Importar middleware
 const { verificarToken } = require('./middleware/auth');
@@ -90,6 +91,17 @@ app.get('/api/recargas/:userId', rechargeController.getUserRecharges);
 app.get('/api/estadisticas-recargas/:userId', rechargeController.getRechargeStats);
 app.post('/api/verificar-puntos', rechargeController.checkPointsAvailability);
 
+// Rutas de competencias
+app.get('/api/competencia-activa', competitionController.getActiveCompetition);
+app.get('/api/ranking-universidades', competitionController.getUniversityRanking);
+app.get('/api/universidades', competitionController.getAllUniversities);
+app.post('/api/contribuir-universidad', verificarToken, competitionController.contributePoints);
+app.get('/api/contribuciones/:userId', competitionController.getUserContributions);
+app.get('/api/recompensas/:userId', competitionController.getUserRewards);
+app.post('/api/crear-competencia', competitionController.createCompetition);
+app.post('/api/finalizar-competencia/:competitionId', competitionController.finalizeCompetition);
+app.get('/api/competencias', competitionController.getAllCompetitions);
+
 // ============================================
 // RUTA PARA SERVIR EL FRONTEND
 // ============================================
@@ -126,6 +138,14 @@ app.get('/pages/user/account', (req, res) => {
 
 app.get('/pages/user/recharges', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/pages/user/recharges.html'));
+});
+
+app.get('/pages/user/competitions', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/user/competitions.html'));
+});
+
+app.get('/pages/admin-competencias', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/admin-competencias.html'));
 });
 
 // ============================================
