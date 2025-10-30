@@ -4,12 +4,13 @@
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const db = require('../config/database');
 const { JWT_SECRET, JWT_OPTIONS } = require('../config/jwt');
 
 // Registrar nuevo usuario
 async function register(req, res) {
-    const { id, name, surname, email, password } = req.body;
+    const { id, name, surname, email, password, referralCodeUsed } = req.body;
     
     // Validaciones
     if (!id || !name || !surname || !email || !password) {
@@ -23,11 +24,14 @@ async function register(req, res) {
     try {
         // Hashear la contraseña
         const hashedPassword = await bcrypt.hash(password, 10);
-        
-        // Insertar usuario en la base de datos
-        const sql = 'INSERT INTO users (id, name, surname, email, password) VALUES (?, ?, ?, ?, ?)';
-        
-        db.run(sql, [id, name, surname, email, hashedPassword], function(err) {
+
+        // Generar un código de referido único para el nuevo usuario
+        const referralCode = (crypto.randomBytes(4).toString('hex')).toUpperCase();
+
+        // Insertar usuario en la base de datos (incluyendo referral_code)
+        const sql = 'INSERT INTO users (id, name, surname, email, password, referral_code) VALUES (?, ?, ?, ?, ?, ?)';
+
+        db.run(sql, [id, name, surname, email, hashedPassword, referralCode], function(err) {
             if (err) {
                 console.log('❌ Error al crear usuario:', err.message);
                 
@@ -39,14 +43,52 @@ async function register(req, res) {
             }
             
             console.log('✅ Usuario creado:', email);
-            
+            // Si se proporcionó un código de referido, intentar aplicarlo
+            if (referralCodeUsed && typeof referralCodeUsed === 'string' && referralCodeUsed.trim() !== '') {
+                const code = referralCodeUsed.trim();
+
+                // Buscar al usuario que tiene ese código
+                const findReferrerSql = 'SELECT id FROM users WHERE referral_code = ?';
+                db.get(findReferrerSql, [code], (findErr, referrer) => {
+                    if (findErr) {
+                        console.log('❌ Error al buscar referrer:', findErr.message);
+                    }
+
+                    if (referrer && referrer.id && referrer.id != id) {
+                        // Sumar 50 puntos al referrer
+                        const updateSql = 'UPDATE users SET credits = credits + 50, total_earned = total_earned + 50 WHERE id = ?';
+                        db.run(updateSql, [referrer.id], function(updateErr) {
+                            if (updateErr) {
+                                console.log('❌ Error al actualizar puntos del referrer:', updateErr.message);
+                            } else {
+                                console.log(`✅ Se otorgaron 50 puntos al referrer (id=${referrer.id}) por referido ${id}`);
+                                // Registrar en tabla referrals
+                                const insertReferral = 'INSERT INTO referrals (referrer_id, referred_id, code_used) VALUES (?, ?, ?)';
+                                db.run(insertReferral, [referrer.id, id, code], function(insErr) {
+                                    if (insErr) {
+                                        console.log('❌ Error al registrar evento de referral:', insErr.message);
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        if (!referrer) {
+                            console.log('⚠️ Código de referido no válido o no encontrado:', code);
+                        } else {
+                            console.log('⚠️ Intento de usar código propio o inválido para referido:', code);
+                        }
+                    }
+                });
+            }
+
             res.status(201).json({
                 mensaje: 'Usuario creado exitosamente',
                 user: {
                     id: id,
                     name: name,
                     surname: surname,
-                    email: email
+                    email: email,
+                    referral_code: referralCode
                 }
             });
         });
@@ -72,6 +114,7 @@ async function login(req, res) {
             users.surname,
             users.email, 
             users.password,
+            users.referral_code,
             users.credits,
             users.total_earned,
             users.created_at,
@@ -125,7 +168,8 @@ async function login(req, res) {
                     email: user.email,
                     credits: user.credits,
                     rank_name: user.rank_name,
-                    created_at: user.created_at
+                    created_at: user.created_at,
+                    referral_code: user.referral_code
                 }
             });
         } catch (error) {
@@ -153,6 +197,7 @@ function getProfile(req, res) {
             users.surname,
             users.email, 
             users.credits,
+            users.referral_code,
             users.created_at,
             ranks.name as rank_name,
             ranks.min_credits,

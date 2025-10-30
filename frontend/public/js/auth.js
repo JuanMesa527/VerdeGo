@@ -44,7 +44,7 @@ function removeUser() {
 // ============================================
 
 // Registro de usuario
-async function register(cedula, name, surname, email, password) {
+async function register(cedula, name, surname, email, password, referralCode) {
     try {
         const response = await fetch(`${API_URL}/crear-usuario`, {
             method: 'POST',
@@ -56,7 +56,8 @@ async function register(cedula, name, surname, email, password) {
                 name,
                 surname,
                 email, 
-                password 
+                password,
+                referralCodeUsed: referralCode || null
             })
         });
 
