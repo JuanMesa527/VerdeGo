@@ -225,6 +225,30 @@ function updateAccountDetails(user) {
     document.getElementById('userEmail').textContent = user.email;
     document.getElementById('userCredits').textContent = `${user.credits || 0} puntos`;
     document.getElementById('userTotalEarned').textContent = `${user.total_earned || user.credits || 0} puntos`;
+
+    // Mostrar código de referido si existe
+    const referralEl = document.getElementById('userReferralCode');
+    if (referralEl) {
+        referralEl.textContent = user.referral_code || '-';
+    }
+
+    // Hook para copiar el código al portapapeles
+    const copyBtn = document.getElementById('copyReferralBtn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            const code = user.referral_code || '';
+            if (!code) {
+                alert('No tienes un código de referido aún');
+                return;
+            }
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Código copiado al portapapeles: ' + code);
+            }).catch((err) => {
+                console.error('Error copiando código:', err);
+                alert('No se pudo copiar el código.');
+            });
+        });
+    }
 }
 
 // Cambiar foto de perfil (placeholder)

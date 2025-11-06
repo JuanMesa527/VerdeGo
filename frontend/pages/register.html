@@ -38,6 +38,11 @@
                     <label for="confirmPassword">Confirmar Contraseña</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" required>
                 </div>
+                <div class="form-group">
+                    <label for="referralCode">Código de referido (opcional)</label>
+                    <input type="text" id="referralCode" name="referralCode" placeholder="Código de referido">
+                    <small>Si alguien te refirió, ingresa su código aquí</small>
+                </div>
                 <div id="errorMessage" class="error-message"></div>
                 <button type="submit" class="btn-submit">Registrarse</button>
             </form>
@@ -72,7 +77,8 @@
             }
             
             try {
-                await register(cedula, name, surname, email, password);
+                const referralCode = document.getElementById('referralCode').value;
+                await register(cedula, name, surname, email, password, referralCode);
                 window.location.href = '../index.html';
             } catch (error) {
                 errorMessage.textContent = error.message;

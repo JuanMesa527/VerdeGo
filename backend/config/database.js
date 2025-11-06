@@ -72,6 +72,7 @@ function initializeDatabase() {
             surname TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
+            referral_code TEXT UNIQUE,
             credits INTEGER DEFAULT 0,
             total_earned INTEGER DEFAULT 0,
             rank_id INTEGER,
@@ -100,6 +101,17 @@ function initializeDatabase() {
                             console.log('✅ total_earned inicializado para usuarios existentes');
                         }
                     });
+                }
+            });
+
+            // Agregar columna referral_code si no existe (migración segura)
+            db.run(`ALTER TABLE users ADD COLUMN referral_code TEXT UNIQUE`, (alterErr2) => {
+                if (alterErr2) {
+                    if (alterErr2.message.includes('duplicate column name')) {
+                        console.log('✅ Columna referral_code ya existe');
+                    }
+                } else {
+                    console.log('✅ Columna referral_code agregada');
                 }
             });
         }
@@ -184,6 +196,25 @@ function initializeDatabase() {
             console.error('❌ Error al crear tabla recharges:', err.message);
         } else {
             console.log('✅ Tabla recharges verificada/creada');
+        }
+    });
+
+    // Tabla de referrals para registrar eventos de referido
+    db.run(`
+        CREATE TABLE IF NOT EXISTS referrals (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            referrer_id INTEGER NOT NULL,
+            referred_id INTEGER NOT NULL,
+            code_used TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (referrer_id) REFERENCES users(id),
+            FOREIGN KEY (referred_id) REFERENCES users(id)
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Error al crear tabla referrals:', err.message);
+        } else {
+            console.log('✅ Tabla referrals verificada/creada');
         }
     });
 }
