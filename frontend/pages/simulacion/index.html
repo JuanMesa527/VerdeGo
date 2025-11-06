@@ -532,6 +532,7 @@
         </div>
     </div>
 
+    <script src="../../public/js/config.js"></script>
     <script src="../../public/js/auth.js"></script>
     <script src="../../public/js/badges.js"></script>
     <script>
@@ -702,7 +703,7 @@
                     console.log('Puntos a agregar:', totalPoints);
                     console.log('Token:', getToken() ? 'Presente' : 'FALTA');
 
-                    const response = await fetch('http://localhost:3000/api/actualizar-puntos', {
+                    const response = await fetch(`${API_URL}/actualizar-puntos`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
