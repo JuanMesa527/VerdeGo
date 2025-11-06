@@ -492,8 +492,12 @@ async function loadUserContributions() {
             url += `?competitionId=${activeCompetition.id}`;
         }
         
+        console.log('📊 Cargando contribuciones desde:', url);
+        
         const response = await fetch(url);
         const data = await response.json();
+        
+        console.log('✅ Datos de contribuciones recibidos:', data);
         
         renderContributions(data.contributions, data.totalContributed);
         
@@ -576,10 +580,22 @@ function renderContributions(contributions, totalContributed) {
     const totalContributedEl = document.getElementById('totalContributed');
     const contributionCountEl = document.getElementById('contributionCount');
     
-    if (!totalContributedEl || !contributionCountEl) return;
+    console.log('🎨 Renderizando contribuciones:');
+    console.log('   - Contributions:', contributions);
+    console.log('   - Total:', totalContributed);
+    console.log('   - Count:', contributions ? contributions.length : 0);
+    
+    if (!totalContributedEl || !contributionCountEl) {
+        console.error('❌ No se encontraron los elementos totalContributed o contributionCount');
+        return;
+    }
     
     totalContributedEl.textContent = totalContributed || 0;
     contributionCountEl.textContent = contributions ? contributions.length : 0;
+    
+    console.log('✅ Valores actualizados:');
+    console.log('   - totalContributed:', totalContributedEl.textContent);
+    console.log('   - contributionCount:', contributionCountEl.textContent);
     
     if (!contributionList) return;
     

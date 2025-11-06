@@ -202,6 +202,8 @@ function getUserContributions(req, res) {
     const userId = req.params.userId;
     const competitionId = req.query.competitionId;
     
+    console.log('📊 Obteniendo contribuciones para usuario:', userId, 'competencia:', competitionId);
+    
     let sql;
     let params;
     
@@ -217,7 +219,7 @@ function getUserContributions(req, res) {
             JOIN universities u ON uc.university_id = u.id
             JOIN competitions c ON uc.competition_id = c.id
             WHERE uc.user_id = ? AND uc.competition_id = ?
-            ORDER BY uc.contributed_at DESC
+            ORDER BY uc.created_at DESC
         `;
         params = [userId, competitionId];
     } else {
@@ -232,7 +234,7 @@ function getUserContributions(req, res) {
             JOIN universities u ON uc.university_id = u.id
             JOIN competitions c ON uc.competition_id = c.id
             WHERE uc.user_id = ?
-            ORDER BY uc.contributed_at DESC
+            ORDER BY uc.created_at DESC
         `;
         params = [userId];
     }
@@ -242,6 +244,8 @@ function getUserContributions(req, res) {
             console.error('❌ Error al obtener contribuciones:', err.message);
             return res.status(500).json({ error: 'Error al obtener contribuciones' });
         }
+        
+        console.log('✅ Contribuciones encontradas:', contributions.length);
         
         const totalContributed = contributions.reduce((sum, c) => sum + c.points_contributed, 0);
         
@@ -363,18 +367,18 @@ function finalizeCompetition(req, res) {
                         
                         // Devolver puntos contribuidos + recompensa al usuario
                         const totalToReturn = contributor.total_contributed + rewardPoints;
-                        db.run('UPDATE users SET credits = credits + ? WHERE id = ?', 
-                            [totalToReturn, contributor.user_id], 
+                        
+                        // Actualizar credits y total_earned
+                        db.run('UPDATE users SET credits = credits + ?, total_earned = total_earned + ? WHERE id = ?', 
+                            [totalToReturn, rewardPoints, contributor.user_id], 
                             function(updateErr) {
                                 if (updateErr) {
                                     console.error(`❌ Error al dar recompensa a usuario ${contributor.user_id}:`, updateErr.message);
                                 } else {
-                                    console.log(`   ✅ Usuario ${contributor.user_id}: +${contributor.total_contributed} (contribución) +${rewardPoints} (recompensa) = ${totalToReturn} pts`);
+                                    console.log(`   ✅ Usuario ${contributor.user_id}: +${contributor.total_contributed} (devuelto) +${rewardPoints} (ganancia) = ${totalToReturn} pts total`);
                                 }
                             }
-                        );
-                        
-                        // Registrar recompensa
+                        );                        // Registrar recompensa
                         db.run(`
                             INSERT INTO competition_rewards 
                             (user_id, competition_id, university_id, points_contributed, reward_points, university_rank)

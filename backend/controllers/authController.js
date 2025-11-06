@@ -197,6 +197,7 @@ function getProfile(req, res) {
             users.surname,
             users.email, 
             users.credits,
+            users.total_earned,
             users.referral_code,
             users.created_at,
             ranks.name as rank_name,

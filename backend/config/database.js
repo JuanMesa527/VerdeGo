@@ -275,6 +275,7 @@ function initializeDatabase() {
         setTimeout(() => {
             // Insertar universidades por defecto
             const defaultUniversities = [
+                { name: 'Universidad Piloto de Colombia', logo: '✈️', color: '#FF6B00' },
                 { name: 'Universidad Nacional de Colombia', logo: '🎓', color: '#DC143C' },
                 { name: 'Universidad de los Andes', logo: '🏔️', color: '#FFD700' },
                 { name: 'Universidad Javeriana', logo: '⚡', color: '#0066CC' },
