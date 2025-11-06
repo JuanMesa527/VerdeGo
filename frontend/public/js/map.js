@@ -36,7 +36,7 @@ const locationIcons = {
 // Cargar ubicaciones desde el backend
 async function loadLocations() {
     try {
-        const response = await fetch('http://localhost:3000/api/ubicaciones');
+        const response = await fetch(`${API_URL.replace('/api', '')}/api/ubicaciones`);
         const data = await response.json();
 
         if (data.locations && data.locations.length > 0) {

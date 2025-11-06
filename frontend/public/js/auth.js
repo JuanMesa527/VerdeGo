@@ -2,7 +2,7 @@
 // SISTEMA DE AUTENTICACIÓN CON JWT + localStorage
 // ============================================
 
-const API_URL = 'http://localhost:3000/api';
+// NOTA: API_URL se configura en config.js (incluir antes de este archivo)
 
 // ============================================
 // GESTIÓN DE TOKEN (localStorage)
@@ -179,7 +179,7 @@ async function updateAuthUI() {
     if (authenticated && user) {
         // Intentar obtener puntos actualizados del servidor
         try {
-            const response = await fetch(`http://localhost:3000/api/puntos/${user.id}`);
+            const response = await fetch(`${API_URL.replace('/api', '')}/api/puntos/${user.id}`);
             if (response.ok) {
                 const data = await response.json();
                 user.credits = data.credits || 0;

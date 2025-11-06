@@ -5,7 +5,7 @@
 // Obtener estadísticas desde la API
 async function loadStats() {
     try {
-        const response = await fetch('http://localhost:3000/api/stats');
+        const response = await fetch(`${API_URL.replace('/api', '')}/api/stats`);
         const data = await response.json();
         
         if (data.success) {
