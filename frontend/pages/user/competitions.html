@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competencia de Universidades - VerdeGo</title>
+    <link rel="stylesheet" href="../../public/css/style.css">
+    <link rel="stylesheet" href="../../public/css/pages/competitions.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../../public/assets/logo.jpg" alt="VerdeGo Logo" onclick="window.location.href='../../index.html'">
+            </div>
+            <nav class="nav-buttons">
+                <button class="nav-btn" onclick="window.location.href='../../index.html'">Inicio</button>
+                <button class="nav-btn active" onclick="window.location.href='competitions.html'">Competencias</button>
+                <button class="nav-btn">Nosotros</button>
+                <button class="nav-btn">Contacto</button>
+            </nav>
+            <div class="auth-buttons">
+                <!-- Se llenará con JavaScript -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="competition-main">
+        <div class="competition-container-full">
+            <!-- Content Area -->
+            <div class="competition-content-full">
+                <!-- Competition Header -->
+                <div class="competition-header">
+                    <div class="header-left">
+                        <h1 class="competition-title">
+                            <span class="title-icon">🏆</span>
+                            Competencia de Universidades
+                        </h1>
+                        <p class="competition-subtitle">
+                            ¡Apoya a tu universidad favorita y gana recompensas!
+                        </p>
+                    </div>
+                    <div class="header-right">
+                        <div class="user-points-card">
+                            <span class="points-label">Tus Puntos</span>
+                            <span class="points-value" id="userPoints">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competition Info Card -->
+                <div class="competition-info-card" id="competitionInfo">
+                    <div class="info-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Cargando información de la competencia...</p>
+                    </div>
+                </div>
+
+                <!-- Ranking Section -->
+                <div class="ranking-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">📊</span>
+                            Ranking de Universidades
+                        </h2>
+                        <div class="ranking-filters">
+                            <button class="filter-btn active" data-filter="current">Competencia Actual</button>
+                            <button class="filter-btn" data-filter="all">Histórico Global</button>
+                        </div>
+                    </div>
+
+                    <div class="ranking-grid" id="rankingGrid">
+                        <!-- Se llenará con JavaScript -->
+                        <div class="ranking-loading">
+                            <div class="loading-spinner"></div>
+                            <p>Cargando ranking...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contribution History -->
+                <div class="contribution-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">💰</span>
+                            Mis Contribuciones
+                        </h2>
+                    </div>
+
+                    <div class="contribution-stats" id="contributionStats">
+                        <div class="stat-card">
+                            <span class="stat-icon">🎯</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Total Contribuido</span>
+                                <span class="stat-value" id="totalContributed">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">📝</span>
+                            <div class="stat-info">
+                                <span class="stat-label">N° de Contribuciones</span>
+                                <span class="stat-value" id="contributionCount">5</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-icon">🎁</span>
+                            <div class="stat-info">
+                                <span class="stat-label">Recompensas Recibidas</span>
+                                <span class="stat-value" id="rewardsReceived">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contribution-list" id="contributionList">
+                        <!-- Se llenará con JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Rewards Section - Mis Ganancias -->
+                <div class="contribution-section" style="margin-top: 30px;">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span class="title-icon">💸</span>
+                            Mis Ganancias
+                        </h2>
+                    </div>
+
+                    <div class="contribution-list" id="rewardsList">
+                        <!-- Se llenará con JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Contribución -->
+    <div class="modal" id="contributeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Contribuir a Universidad</h3>
+                <button class="modal-close" onclick="closeContributeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="university-info" id="modalUniversityInfo">
+                    <!-- Se llenará con JavaScript -->
+                </div>
+
+                <div class="form-group">
+                    <label for="pointsInput">Cantidad de Puntos</label>
+                    <input 
+                        type="number" 
+                        id="pointsInput" 
+                        class="form-input" 
+                        min="1" 
+                        placeholder="Ingresa la cantidad de puntos"
+                    >
+                    <div class="input-info">
+                        <span>Puntos disponibles: <strong id="modalAvailablePoints">0</strong></span>
+                    </div>
+                </div>
+
+                <div class="contribution-preview" id="contributionPreview" style="display: none;">
+                    <h4>Resumen de Contribución</h4>
+                    <div class="preview-item">
+                        <span>Universidad:</span>
+                        <span id="previewUniversity">-</span>
+                    </div>
+                    <div class="preview-item">
+                        <span>Puntos a contribuir:</span>
+                        <span id="previewPoints">0</span>
+                    </div>
+                    <div class="preview-item">
+                        <span>Puntos restantes:</span>
+                        <span id="previewRemaining">0</span>
+                    </div>
+                </div>
+
+                <div class="modal-alert" id="modalAlert" style="display: none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeContributeModal()">Cancelar</button>
+                <button class="btn-primary" id="confirmContributeBtn" onclick="confirmContribution()">
+                    Contribuir Puntos
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 VerdeGo. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="../../public/js/auth.js"></script>
+    <script src="../../public/js/pages/competitions.js"></script>
+</body>
+</html>

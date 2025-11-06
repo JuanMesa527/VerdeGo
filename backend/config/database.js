@@ -217,6 +217,127 @@ function initializeDatabase() {
             console.log('✅ Tabla referrals verificada/creada');
         }
     });
+
+    // Tabla de competencias
+    db.run(`
+        CREATE TABLE IF NOT EXISTS competitions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            start_date DATETIME NOT NULL,
+            end_date DATETIME NOT NULL,
+            status TEXT DEFAULT 'active',
+            reward_percentage INTEGER DEFAULT 10,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Error al crear tabla competitions:', err.message);
+        } else {
+            console.log('✅ Tabla competitions verificada/creada');
+        }
+    });
+
+    // Tabla de universidades
+    db.run(`
+        CREATE TABLE IF NOT EXISTS universities (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL UNIQUE,
+            logo TEXT NOT NULL,
+            total_points INTEGER DEFAULT 0,
+            color TEXT DEFAULT '#4CAF50',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Error al crear tabla universities:', err.message);
+        } else {
+            console.log('✅ Tabla universities verificada/creada');
+        }
+        
+        // Agregar columnas si no existen (migración segura)
+        db.run(`ALTER TABLE universities ADD COLUMN logo TEXT DEFAULT '🎓'`, (alterErr) => {
+            if (alterErr && !alterErr.message.includes('duplicate column')) {
+                console.error('⚠️  Error al agregar columna logo:', alterErr.message);
+            } else if (!alterErr) {
+                console.log('✅ Columna logo agregada');
+            }
+        });
+        
+        db.run(`ALTER TABLE universities ADD COLUMN color TEXT DEFAULT '#4CAF50'`, (alterErr) => {
+            if (alterErr && !alterErr.message.includes('duplicate column')) {
+                console.error('⚠️  Error al agregar columna color:', alterErr.message);
+            } else if (!alterErr) {
+                console.log('✅ Columna color agregada');
+            }
+        });
+        
+        // Esperar un momento para que se agreguen las columnas antes de insertar
+        setTimeout(() => {
+            // Insertar universidades por defecto
+            const defaultUniversities = [
+                { name: 'Universidad Nacional de Colombia', logo: '🎓', color: '#DC143C' },
+                { name: 'Universidad de los Andes', logo: '🏔️', color: '#FFD700' },
+                { name: 'Universidad Javeriana', logo: '⚡', color: '#0066CC' },
+                { name: 'Universidad del Rosario', logo: '🌹', color: '#8B0000' },
+                { name: 'Universidad de Antioquia', logo: '🦌', color: '#228B22' }
+            ];
+
+            defaultUniversities.forEach(uni => {
+                db.run(`INSERT OR IGNORE INTO universities (name, logo, color) VALUES (?, ?, ?)`,
+                    [uni.name, uni.logo, uni.color],
+                    (insertErr) => {
+                        if (insertErr && !insertErr.message.includes('UNIQUE constraint')) {
+                            console.error(`❌ Error al insertar universidad ${uni.name}:`, insertErr.message);
+                        }
+                    }
+                );
+            });
+        }, 100);
+    });
+
+    // Tabla de contribuciones a universidades
+    db.run(`
+        CREATE TABLE IF NOT EXISTS university_contributions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            university_id INTEGER NOT NULL,
+            competition_id INTEGER NOT NULL,
+            points_contributed INTEGER NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (university_id) REFERENCES universities(id),
+            FOREIGN KEY (competition_id) REFERENCES competitions(id)
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Error al crear tabla university_contributions:', err.message);
+        } else {
+            console.log('✅ Tabla university_contributions verificada/creada');
+        }
+    });
+
+    // Tabla de recompensas de competencias
+    db.run(`
+        CREATE TABLE IF NOT EXISTS competition_rewards (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            competition_id INTEGER NOT NULL,
+            university_id INTEGER NOT NULL,
+            points_contributed INTEGER NOT NULL,
+            reward_points INTEGER NOT NULL,
+            university_rank INTEGER NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (competition_id) REFERENCES competitions(id),
+            FOREIGN KEY (university_id) REFERENCES universities(id)
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Error al crear tabla competition_rewards:', err.message);
+        } else {
+            console.log('✅ Tabla competition_rewards verificada/creada');
+        }
+    });
 }
 
 // Inicializar la base de datos
