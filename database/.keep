@@ -1,0 +1,3 @@
+# Este archivo asegura que el directorio database/ exista en el repositorio
+# La base de datos real (database.db) está en .gitignore y se creará automáticamente
+# En Railway, el directorio se creará al iniciar el servidor
