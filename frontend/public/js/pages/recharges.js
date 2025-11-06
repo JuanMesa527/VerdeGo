@@ -41,7 +41,7 @@ async function loadUserData() {
         // SIEMPRE obtener puntos actualizados del servidor
         try {
             console.log('🔄 Obteniendo puntos del servidor...');
-            const response = await fetch(`${API_URL.replace('/api', '')}/api/puntos/${currentUser.id}`);
+            const response = await fetch(`${API_URL}/puntos/${currentUser.id}`);
             
             if (response.ok) {
                 const data = await response.json();
@@ -266,7 +266,7 @@ async function confirmRecharge() {
         });
         
         // Descontar puntos
-        const response = await fetch('${API_URL.replace('/api', '')}/api/actualizar-puntos', {
+        const response = await fetch(`${API_URL}/actualizar-puntos`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -296,7 +296,7 @@ async function confirmRecharge() {
         
         // Guardar recarga en el servidor
         try {
-            const rechargeResponse = await fetch('${API_URL.replace('/api', '')}/api/crear-recarga', {
+            const rechargeResponse = await fetch(`${API_URL}/crear-recarga`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -395,7 +395,7 @@ async function confirmRecharge() {
         
         // Recargar puntos del servidor por si acaso
         try {
-            const response = await fetch(`${API_URL.replace('/api', '')}/api/puntos/${currentUser.id}`);
+            const response = await fetch(`${API_URL}/puntos/${currentUser.id}`);
             if (response.ok) {
                 const data = await response.json();
                 userPoints = data.credits || 0;
@@ -461,7 +461,7 @@ async function closeSuccessModal() {
     
     // Refrescar puntos una vez más para estar seguros
     try {
-        const response = await fetch(`${API_URL.replace('/api', '')}/api/puntos/${currentUser.id}`);
+        const response = await fetch(`${API_URL}/puntos/${currentUser.id}`);
         if (response.ok) {
             const data = await response.json();
             userPoints = data.credits || 0;
@@ -498,7 +498,7 @@ function generateTransactionId() {
 async function loadRechargeHistory() {
     try {
         console.log('📋 Cargando historial de recargas...');
-        const response = await fetch(`${API_URL.replace('/api', '')}/api/recargas/${currentUser.id}`);
+        const response = await fetch(`${API_URL}/recargas/${currentUser.id}`);
         
         if (response.ok) {
             const data = await response.json();

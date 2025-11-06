@@ -25,7 +25,7 @@ async function loadAccountData() {
         // Obtener datos actualizados del servidor
         try {
             console.log('📡 Consultando puntos actualizados del servidor...');
-            const response = await fetch(`${API_URL.replace('/api', '')}/api/puntos/${user.id}`, {
+            const response = await fetch(`${API_URL}/puntos/${user.id}`, {
                 headers: {
                     'Authorization': `Bearer ${getToken()}`
                 }

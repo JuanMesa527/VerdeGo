@@ -181,7 +181,7 @@ async function loadUserData() {
 
         // Obtener puntos actualizados del servidor
         try {
-            const response = await fetch(`${API_URL.replace('/api', '')}/api/puntos/${currentUser.id}`);
+            const response = await fetch(`${API_URL}/puntos/${currentUser.id}`);
             if (response.ok) {
                 const data = await response.json();
                 userPoints = data.credits || 0;
@@ -360,7 +360,7 @@ async function confirmRedeem() {
         const bonusCode = generateBonusCode();
 
         // Actualizar puntos en el servidor
-        const pointsResponse = await fetch('${API_URL.replace('/api', '')}/api/actualizar-puntos', {
+        const pointsResponse = await fetch(`${API_URL}/actualizar-puntos`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -380,7 +380,7 @@ async function confirmRedeem() {
         userPoints = pointsData.newTotal;
 
         // Guardar bono canjeado en el servidor
-        const bonusResponse = await fetch('${API_URL.replace('/api', '')}/api/canjear-bono', {
+        const bonusResponse = await fetch(`${API_URL}/canjear-bono`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -493,7 +493,7 @@ function generateBonusCode() {
 async function loadRedeemedBonusesFromServer() {
     try {
         console.log('🔄 Cargando bonos canjeados del servidor...');
-        const response = await fetch(`${API_URL.replace('/api', '')}/api/bonos-canjeados/${currentUser.id}`);
+        const response = await fetch(`${API_URL}/bonos-canjeados/${currentUser.id}`);
         
         if (response.ok) {
             const data = await response.json();
