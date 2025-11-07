@@ -74,6 +74,7 @@ let isUpdating = false;
 async function checkAndUpdateMissions() {
     // Evitar múltiples actualizaciones simultáneas
     if (isUpdating) {
+        console.log('⏳ Ya hay una actualización en proceso...');
         return;
     }
 
@@ -81,97 +82,116 @@ async function checkAndUpdateMissions() {
     
     // Si ya verificamos hoy, no hacer nada
     if (lastCheckDate === today) {
+        console.log('✅ Misiones ya verificadas hoy');
         return;
     }
 
     isUpdating = true;
+    console.log('🔍 Iniciando verificación de misiones...');
 
-    try {
-        // Verificar si hay misiones activas para la semana actual
-        const weekDates = getCurrentWeekDates();
-        
-        const checkQuery = `
-            SELECT COUNT(*) as count 
-            FROM weekly_missions 
-            WHERE is_active = 1 
-            AND start_date = ? 
-            AND end_date = ?
-        `;
-
-        db.get(checkQuery, [weekDates.start, weekDates.end], (err, result) => {
-            if (err) {
-                console.error('❌ Error al verificar misiones:', err.message);
-                isUpdating = false;
-                return;
-            }
-
-            // Si ya existen misiones para esta semana, no hacer nada
-            if (result.count >= 3) {
-                console.log('✅ Misiones de la semana actual ya existen');
-                lastCheckDate = today;
-                isUpdating = false;
-                return;
-            }
-
-            // Si no existen, crear nuevas misiones
-            console.log('🔄 Detectada nueva semana, actualizando misiones...');
+    return new Promise((resolve, reject) => {
+        try {
+            // Verificar si hay misiones activas para la semana actual
+            const weekDates = getCurrentWeekDates();
+            console.log(`📅 Verificando semana: ${weekDates.start} a ${weekDates.end}`);
             
-            // 1. Desactivar misiones antiguas
-            db.run(`UPDATE weekly_missions SET is_active = 0 WHERE date(end_date) < date('now')`, (err) => {
+            const checkQuery = `
+                SELECT COUNT(*) as count 
+                FROM weekly_missions 
+                WHERE is_active = 1 
+                AND start_date = ? 
+                AND end_date = ?
+            `;
+
+            db.get(checkQuery, [weekDates.start, weekDates.end], (err, result) => {
                 if (err) {
-                    console.error('❌ Error al desactivar misiones antiguas:', err.message);
+                    console.error('❌ Error al verificar misiones:', err.message);
                     isUpdating = false;
+                    reject(err);
                     return;
                 }
 
-                // 2. Limpiar progreso de misiones antiguas (NO acumulables)
-                db.run(`DELETE FROM user_mission_progress WHERE mission_id IN (SELECT id FROM weekly_missions WHERE is_active = 0)`, (err) => {
+                // Si ya existen misiones para esta semana, no hacer nada
+                if (result && result.count >= 3) {
+                    console.log(`✅ Misiones de la semana actual ya existen (${result.count} misiones)`);
+                    lastCheckDate = today;
+                    isUpdating = false;
+                    resolve();
+                    return;
+                }
+
+                // Si no existen, crear nuevas misiones
+                console.log('🔄 Detectada nueva semana, actualizando misiones...');
+                
+                // 1. Desactivar misiones antiguas
+                db.run(`UPDATE weekly_missions SET is_active = 0 WHERE date(end_date) < date('now')`, (err) => {
                     if (err) {
-                        console.error('❌ Error al limpiar progreso antiguo:', err.message);
-                    } else {
-                        console.log('✅ Progreso de misiones antiguas eliminado');
+                        console.error('❌ Error al desactivar misiones antiguas:', err.message);
+                        isUpdating = false;
+                        reject(err);
+                        return;
                     }
+                    console.log('✅ Misiones antiguas desactivadas');
 
-                    // 3. Crear nuevas misiones para la semana actual
-                    const insertQuery = `
-                        INSERT INTO weekly_missions (name, description, material_type, target_weight, reward_points, start_date, end_date)
-                        VALUES (?, ?, ?, ?, ?, ?, ?)
-                    `;
+                    // 2. Limpiar progreso de misiones antiguas (NO acumulables)
+                    db.run(`DELETE FROM user_mission_progress WHERE mission_id IN (SELECT id FROM weekly_missions WHERE is_active = 0)`, (err) => {
+                        if (err) {
+                            console.error('❌ Error al limpiar progreso antiguo:', err.message);
+                        } else {
+                            console.log('✅ Progreso de misiones antiguas eliminado');
+                        }
 
-                    let createdCount = 0;
-                    weeklyMissionsTemplate.forEach((mission, index) => {
-                        db.run(insertQuery, [
-                            mission.name,
-                            mission.description,
-                            mission.material_type,
-                            mission.target_weight,
-                            mission.reward_points,
-                            weekDates.start,
-                            weekDates.end
-                        ], function(err) {
-                            if (err) {
-                                console.error(`❌ Error al crear misión "${mission.name}":`, err.message);
-                            } else {
-                                createdCount++;
-                                console.log(`✅ Misión creada: "${mission.name}"`);
-                            }
+                        // 3. Crear nuevas misiones para la semana actual
+                        const insertQuery = `
+                            INSERT INTO weekly_missions (name, description, material_type, target_weight, reward_points, start_date, end_date)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)
+                        `;
 
-                            // Si es la última misión
-                            if (index === weeklyMissionsTemplate.length - 1) {
-                                console.log(`🎉 Misiones semanales actualizadas: ${createdCount}/${weeklyMissionsTemplate.length}`);
-                                console.log(`📅 Semana: ${weekDates.start} a ${weekDates.end}`);
-                                lastCheckDate = today;
-                                isUpdating = false;
-                            }
+                        let createdCount = 0;
+                        let hasError = false;
+                        
+                        weeklyMissionsTemplate.forEach((mission, index) => {
+                            db.run(insertQuery, [
+                                mission.name,
+                                mission.description,
+                                mission.material_type,
+                                mission.target_weight,
+                                mission.reward_points,
+                                weekDates.start,
+                                weekDates.end
+                            ], function(err) {
+                                if (err) {
+                                    console.error(`❌ Error al crear misión "${mission.name}":`, err.message);
+                                    hasError = true;
+                                } else {
+                                    createdCount++;
+                                    console.log(`✅ Misión creada: "${mission.name}" (ID: ${this.lastID})`);
+                                }
+
+                                // Si es la última misión
+                                if (index === weeklyMissionsTemplate.length - 1) {
+                                    console.log(`🎉 Misiones semanales actualizadas: ${createdCount}/${weeklyMissionsTemplate.length}`);
+                                    console.log(`📅 Semana: ${weekDates.start} a ${weekDates.end}`);
+                                    lastCheckDate = today;
+                                    isUpdating = false;
+                                    
+                                    if (hasError) {
+                                        reject(new Error('Algunas misiones no se pudieron crear'));
+                                    } else {
+                                        resolve();
+                                    }
+                                }
+                            });
                         });
                     });
                 });
             });
-        });
-    } catch (error) {
-        console.error('❌ Error en actualización automática de misiones:', error.message);
-        isUpdating = false;
-    }
+        } catch (error) {
+            console.error('❌ Error en actualización automática de misiones:', error.message);
+            isUpdating = false;
+            reject(error);
+        }
+    });
 }
 
 // Middleware para verificar en cada request relacionado con misiones

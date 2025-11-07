@@ -185,7 +185,7 @@ app.use((req, res) => {
 // INICIAR SERVIDOR
 // ============================================
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log('');
     console.log('🚀 ===================================');
     console.log(`🌿 Servidor VerdeGo iniciado en puerto ${PORT}`);
@@ -196,8 +196,15 @@ app.listen(PORT, () => {
     
     // Verificar y actualizar misiones semanales al iniciar el servidor
     const { checkAndUpdateMissions } = require('./middleware/weeklyMissionsUpdate');
-    console.log('🔍 Verificando misiones semanales...');
-    checkAndUpdateMissions().catch(err => {
-        console.error('❌ Error al verificar misiones:', err);
-    });
+    console.log('🔍 Verificando misiones semanales al iniciar servidor...');
+    
+    // Esperar un poco para asegurar que las tablas estén creadas
+    setTimeout(async () => {
+        try {
+            await checkAndUpdateMissions();
+            console.log('✅ Verificación de misiones completada');
+        } catch (err) {
+            console.error('❌ Error al verificar misiones:', err);
+        }
+    }, 1000); // Esperar 1 segundo para que las tablas se creen
 });
