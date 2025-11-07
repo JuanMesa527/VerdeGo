@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulación de Reciclaje - VerdeGo</title>
+    <link rel="icon" type="image/jpeg" href="../../public/assets/logo.jpg">
     <link rel="stylesheet" href="../../public/css/style.css">
     <style>
         .simulation-container {
@@ -340,7 +341,7 @@
                 <button class="nav-btn" onclick="window.location.href='../../index.html'">Inicio</button>
                 <button class="nav-btn">Servicios</button>
                 <button class="nav-btn">Nosotros</button>
-                <button class="nav-btn">Contacto</button>
+                <button class="nav-btn" onclick="window.location.href='../contact.html'">Contacto</button>
             </nav>
             <div class="auth-buttons"></div>
         </div>
@@ -538,12 +539,12 @@
     <script>
         // Sistema de reciclaje
         const materials = {
-            plastic: { name: 'Plástico', icon: '🍾', pointsPerKg: 5, weight: 0, points: 0 },
-            paper: { name: 'Papel y Cartón', icon: '📄', pointsPerKg: 3, weight: 0, points: 0 },
-            glass: { name: 'Vidrio', icon: '🍷', pointsPerKg: 8, weight: 0, points: 0 },
-            metal: { name: 'Metal', icon: '🥫', pointsPerKg: 12, weight: 0, points: 0 },
-            electronic: { name: 'Electrónicos', icon: '🔋', pointsPerKg: 25, weight: 0, points: 0 },
-            organic: { name: 'Orgánicos', icon: '🌿', pointsPerKg: 2, weight: 0, points: 0 }
+            plastic: { name: 'Plástico', icon: '🍾', pointsPerKg: 15, weight: 0, points: 0 },
+            paper: { name: 'Papel y Cartón', icon: '📄', pointsPerKg: 10, weight: 0, points: 0 },
+            glass: { name: 'Vidrio', icon: '🍷', pointsPerKg: 20, weight: 0, points: 0 },
+            metal: { name: 'Metal', icon: '🥫', pointsPerKg: 30, weight: 0, points: 0 },
+            electronic: { name: 'Electrónicos', icon: '🔋', pointsPerKg: 50, weight: 0, points: 0 },
+            organic: { name: 'Orgánicos', icon: '🌿', pointsPerKg: 8, weight: 0, points: 0 }
         };
 
         let totalPointsAccumulated = 0;
@@ -729,7 +730,10 @@
                         currentUser.total_earned = data.totalEarned;
                         saveUser(currentUser);
                         
-                        console.log('✅ Puntos actualizados exitosamente!');
+                        // Actualizar progreso de misiones
+                        await updateMissionsProgress();
+                        
+                        // Actualizar visualización
                         console.log('   - Puntos anteriores:', data.previousTotal);
                         console.log('   - Puntos agregados:', data.pointsAdded);
                         console.log('   - Nuevo total:', data.newTotal);
@@ -778,6 +782,36 @@
                     badge.maxPoints === Infinity ? 
                     `${badge.minPoints}+ puntos` : 
                     `${badge.minPoints} - ${badge.maxPoints} puntos`;
+            }
+        }
+
+        // Actualizar progreso de misiones
+        async function updateMissionsProgress() {
+            if (!currentUser) return;
+            
+            try {
+                // Enviar actualización de progreso por cada tipo de material reciclado
+                for (let materialType in materials) {
+                    const weight = materials[materialType].weight;
+                    if (weight > 0) {
+                        console.log(`📈 Actualizando misión para ${materialType}: ${weight}kg`);
+                        
+                        await fetch(`${API_URL}/actualizar-mision`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                userId: currentUser.id,
+                                materialType: materialType,
+                                weight: weight
+                            })
+                        });
+                    }
+                }
+                console.log('✅ Progreso de misiones actualizado');
+            } catch (error) {
+                console.error('❌ Error al actualizar misiones:', error);
             }
         }
     </script>

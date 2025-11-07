@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misiones Semanales - VerdeGo</title>
+    <link rel="icon" type="image/jpeg" href="../../public/assets/logo.jpg">
+    <link rel="stylesheet" href="../../public/css/style.css">
+    <link rel="stylesheet" href="../../public/css/pages/missions.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="../../public/assets/logo.jpg" alt="VerdeGo Logo" onclick="window.location.href='../../index.html'">
+            </div>
+            <nav class="nav-buttons">
+                <button class="nav-btn" onclick="window.location.href='../../index.html'">Inicio</button>
+                <button class="nav-btn" onclick="window.location.href='competitions.html'">Competencias</button>
+                <button class="nav-btn" onclick="window.location.href='/pages/about'">Nosotros</button>
+                <button class="nav-btn" onclick="window.location.href='/pages/contact'">Contacto</button>
+            </nav>
+            <div class="auth-buttons">
+                <!-- Se llenará con JavaScript -->
+            </div>
+        </div>
+    </header>
+
+    <main class="missions-main">
+        <div class="account-container">
+            <!-- Sidebar -->
+            <aside class="account-sidebar">
+                <nav class="sidebar-nav">
+                    <a href="account.html" class="sidebar-item">
+                        <span class="sidebar-icon">👤</span>
+                        <span class="sidebar-text">Mi Perfil</span>
+                    </a>
+                    <a href="missions.html" class="sidebar-item active">
+                        <span class="sidebar-icon">🎯</span>
+                        <span class="sidebar-text">Misiones Semanales</span>
+                    </a>
+                    <a href="bonuses.html" class="sidebar-item">
+                        <span class="sidebar-icon">🎁</span>
+                        <span class="sidebar-text">Mis Bonos</span>
+                    </a>
+                    <a href="recharges.html" class="sidebar-item">
+                        <span class="sidebar-icon">💳</span>
+                        <span class="sidebar-text">Mis Recargas</span>
+                    </a>
+                    <a href="competitions.html" class="sidebar-item">
+                        <span class="sidebar-icon">🏆</span>
+                        <span class="sidebar-text">Competencias</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="account-content">
+                <div class="missions-hero">
+                    <h1 class="hero-title">
+                        <span class="hero-icon">🎯</span>
+                        Misiones Semanales
+                    </h1>
+                    <p class="hero-subtitle">
+                        Completa desafíos y gana recompensas extra
+                    </p>
+                </div>
+
+                <div class="missions-container">
+                    <!-- Información del usuario -->
+                    <div class="user-stats-card">
+                        <div class="stat-item">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="userPoints">0</div>
+                                <div class="stat-label">Puntos Totales</div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="completedMissions">0</div>
+                                <div class="stat-label">Misiones Completadas</div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">🎁</div>
+                            <div class="stat-content">
+                                <div class="stat-value" id="totalRewards">0</div>
+                                <div class="stat-label">Puntos Ganados</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grid de Misiones -->
+                    <div class="missions-grid" id="missionsGrid">
+                        <div class="loading-state">
+                            <div class="loader"></div>
+                            <p>Cargando misiones...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 VerdeGo - Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <script src="../../public/js/config.js"></script>
+    <script src="../../public/js/auth.js"></script>
+    <script src="../../public/js/pages/missions.js"></script>
+</body>
+</html>

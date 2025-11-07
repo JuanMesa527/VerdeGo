@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Cuenta - VerdeGo</title>
+    <link rel="icon" type="image/jpeg" href="../../public/assets/logo.jpg">
     <link rel="stylesheet" href="../../public/css/style.css">
     <link rel="stylesheet" href="../../public/css/pages/account.css">
 </head>
@@ -15,10 +16,10 @@
                 <img src="../../public/assets/logo.jpg" alt="VerdeGo Logo" onclick="window.location.href='../../index.html'">
             </div>
             <nav class="nav-buttons">
-                <button class="nav-btn" onclick="window.location.href='../../index.html'">Inicio</button>
-                <button class="nav-btn" onclick="window.location.href='competitions.html'">Competencias</button>
-                <button class="nav-btn">Nosotros</button>
-                <button class="nav-btn">Contacto</button>
+                <button class="nav-btn" onclick="window.location.href='/'">Inicio</button>
+                <button class="nav-btn" onclick="window.location.href='/pages/user/competitions'">Competencias</button>
+                <button class="nav-btn" onclick="window.location.href='/pages/about'">Nosotros</button>
+                <button class="nav-btn" onclick="window.location.href='/pages/contact'">Contacto</button>
             </nav>
             <div class="auth-buttons">
                 <!-- Se llenará con JavaScript -->
@@ -35,6 +36,10 @@
                     <a href="account.html" class="sidebar-item active">
                         <span class="sidebar-icon">👤</span>
                         <span class="sidebar-text">Mi Perfil</span>
+                    </a>
+                    <a href="missions.html" class="sidebar-item">
+                        <span class="sidebar-icon">🎯</span>
+                        <span class="sidebar-text">Misiones Semanales</span>
                     </a>
                     <a href="bonuses.html" class="sidebar-item">
                         <span class="sidebar-icon">🎁</span>
@@ -56,14 +61,6 @@
                 <!-- Profile Card -->
                 <div class="profile-card">
                     <div class="profile-header">
-                        <div class="profile-avatar-container">
-                            <div class="profile-avatar" id="profileAvatar">
-                                <span id="avatarInitials">?</span>
-                            </div>
-                            <button class="change-photo-btn" onclick="changeProfilePhoto()">
-                                📷 Cambiar foto
-                            </button>
-                        </div>
                         <div class="profile-info">
                             <h1 class="profile-name" id="profileName">Cargando...</h1>
                             <p class="profile-email" id="profileEmail">correo@ejemplo.com</p>

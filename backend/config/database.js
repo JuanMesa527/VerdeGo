@@ -339,6 +339,50 @@ function initializeDatabase() {
             console.log('✅ Tabla competition_rewards verificada/creada');
         }
     });
+
+    // Tabla de misiones semanales
+    db.run(`
+        CREATE TABLE IF NOT EXISTS weekly_missions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            description TEXT NOT NULL,
+            material_type TEXT NOT NULL,
+            target_weight REAL NOT NULL,
+            reward_points INTEGER NOT NULL,
+            start_date TEXT NOT NULL,
+            end_date TEXT NOT NULL,
+            is_active INTEGER DEFAULT 1,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Error al crear tabla weekly_missions:', err.message);
+        } else {
+            console.log('✅ Tabla weekly_missions verificada/creada');
+        }
+    });
+
+    // Tabla de progreso de misiones de usuarios
+    db.run(`
+        CREATE TABLE IF NOT EXISTS user_mission_progress (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            mission_id INTEGER NOT NULL,
+            current_weight REAL DEFAULT 0,
+            is_completed INTEGER DEFAULT 0,
+            completed_at DATETIME,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (mission_id) REFERENCES weekly_missions(id),
+            UNIQUE(user_id, mission_id)
+        )
+    `, (err) => {
+        if (err) {
+            console.error('❌ Error al crear tabla user_mission_progress:', err.message);
+        } else {
+            console.log('✅ Tabla user_mission_progress verificada/creada');
+        }
+    });
 }
 
 // Inicializar la base de datos

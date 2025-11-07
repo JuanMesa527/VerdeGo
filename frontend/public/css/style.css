@@ -59,6 +59,11 @@ body {
     color: #28a745;
 }
 
+.nav-btn.active {
+    background-color: #28a745;
+    color: #fff;
+}
+
 /* Botones de autenticación */
 .auth-buttons {
     display: flex;

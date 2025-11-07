@@ -104,19 +104,6 @@ function updateProfileInfo(user) {
         const day = String(today.getDate()).padStart(2, '0');
         memberSince.textContent = `${year}/${month}/${day}`;
     }
-    
-    // Avatar (iniciales)
-    const avatarInitials = document.getElementById('avatarInitials');
-    const initials = getInitials(user.name, user.surname);
-    avatarInitials.textContent = initials;
-}
-
-// Obtener iniciales del nombre
-function getInitials(name, surname) {
-    let initials = '';
-    if (name) initials += name.charAt(0);
-    if (surname) initials += surname.charAt(0);
-    return initials.toUpperCase() || '?';
 }
 
 // Actualizar información de insignias
@@ -249,9 +236,4 @@ function updateAccountDetails(user) {
             });
         });
     }
-}
-
-// Cambiar foto de perfil (placeholder)
-function changeProfilePhoto() {
-    alert('Funcionalidad de cambio de foto - En desarrollo\n\nPróximamente podrás subir tu propia foto de perfil.');
 }

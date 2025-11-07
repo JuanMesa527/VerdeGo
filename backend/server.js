@@ -23,9 +23,11 @@ const bonusController = require('./controllers/bonusController');
 const rechargeController = require('./controllers/rechargeController');
 const statsController = require('./controllers/statsController');
 const competitionController = require('./controllers/competitionController');
+const missionController = require('./controllers/missionController');
 
 // Importar middleware
 const { verificarToken } = require('./middleware/auth');
+const { autoUpdateMissions } = require('./middleware/weeklyMissionsUpdate');
 
 // Crear aplicación Express
 const app = express();
@@ -106,6 +108,13 @@ app.post('/api/crear-competencia', competitionController.createCompetition);
 app.post('/api/finalizar-competencia/:competitionId', competitionController.finalizeCompetition);
 app.get('/api/competencias', competitionController.getAllCompetitions);
 
+// Rutas de misiones semanales (con auto-actualización)
+app.get('/api/misiones-activas', autoUpdateMissions, missionController.getActiveMissions);
+app.get('/api/misiones-progreso/:userId', autoUpdateMissions, missionController.getUserMissionProgress);
+app.post('/api/actualizar-mision', autoUpdateMissions, missionController.updateMissionProgress);
+app.post('/api/reclamar-mision', verificarToken, autoUpdateMissions, missionController.claimMissionReward);
+app.post('/api/crear-mision', missionController.createMission);
+
 // ============================================
 // RUTA PARA SERVIR EL FRONTEND
 // ============================================
@@ -148,6 +157,18 @@ app.get('/pages/user/competitions', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/pages/user/competitions.html'));
 });
 
+app.get('/pages/user/missions', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/user/missions.html'));
+});
+
+app.get('/pages/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/contact.html'));
+});
+
+app.get('/pages/about', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/about.html'));
+});
+
 app.get('/pages/admin-competencias', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/pages/admin-competencias.html'));
 });
@@ -172,4 +193,11 @@ app.listen(PORT, () => {
     console.log(`🌐 Frontend disponible en: http://localhost:${PORT}`);
     console.log('🚀 ===================================');
     console.log('');
+    
+    // Verificar y actualizar misiones semanales al iniciar el servidor
+    const { checkAndUpdateMissions } = require('./middleware/weeklyMissionsUpdate');
+    console.log('🔍 Verificando misiones semanales...');
+    checkAndUpdateMissions().catch(err => {
+        console.error('❌ Error al verificar misiones:', err);
+    });
 });
