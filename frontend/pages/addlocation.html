@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Ubicación - VerdeGo</title>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/pages/addlocation.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>
+                    <i class="fas fa-map-marker-alt"></i>
+                    Agregar Nueva Ubicación
+                </h1>
+                <p>Complete el formulario para agregar una nueva ubicación al mapa de VerdeGo</p>
+            </div>
+
+            <div class="form-container">
+                <!-- Mensajes de éxito/error -->
+                <div id="message" class="message" style="display: none;"></div>
+
+                <!-- Formulario -->
+                <form id="addLocationForm">
+                    <div class="form-grid">
+                        <!-- Nombre de la ubicación -->
+                        <div class="form-group full-width">
+                            <label for="name">
+                                <i class="fas fa-building"></i>
+                                Nombre de la ubicación *
+                            </label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                name="name" 
+                                placeholder="Ej: VerdeGo Centro Chapinero"
+                                required
+                            >
+                        </div>
+
+                        <!-- Tipo de ubicación -->
+                        <div class="form-group full-width">
+                            <label for="type">
+                                <i class="fas fa-tag"></i>
+                                Tipo de ubicación *
+                            </label>
+                            <select id="type" name="type" required>
+                                <option value="">Seleccione un tipo</option>
+                                <option value="verdego">VerdeGo - Centro de Reciclaje</option>
+                                <option value="aliada">Tienda Aliada</option>
+                            </select>
+                        </div>
+
+                        <!-- Instrucciones del mapa -->
+                        <div class="form-group full-width">
+                            <div class="map-instructions">
+                                <i class="fas fa-mouse-pointer"></i>
+                                <strong>Seleccionar ubicación desde el mapa:</strong>
+                                <p>Haga clic en el mapa de Bogotá para seleccionar la ubicación exacta. Solo se permiten ubicaciones dentro de Bogotá, Colombia.</p>
+                            </div>
+                        </div>
+
+                        <!-- Mapa interactivo -->
+                        <div class="form-group full-width">
+                            <div id="map" class="location-map"></div>
+                            <div id="location-info" class="location-info" style="display: none;">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span id="selected-address">Ninguna ubicación seleccionada</span>
+                            </div>
+                        </div>
+
+                        <!-- Campos ocultos para coordenadas y dirección -->
+                        <input type="hidden" id="latitude" name="latitude">
+                        <input type="hidden" id="longitude" name="longitude">
+                        <input type="hidden" id="address" name="address">
+
+                        <!-- Botones de acción -->
+                        <div class="form-actions full-width">
+                            <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">
+                                <i class="fas fa-times"></i>
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+                                <i class="fas fa-save"></i>
+                                <span id="submitBtnText">Guardar Ubicación</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista de Ubicaciones -->
+            <div class="locations-list-container">
+                <div class="list-header">
+                    <h2>
+                        <i class="fas fa-list"></i>
+                        Ubicaciones Registradas
+                    </h2>
+                    <button class="btn btn-refresh" onclick="loadAllLocations()">
+                        <i class="fas fa-sync-alt"></i>
+                        Actualizar
+                    </button>
+                </div>
+
+                <!-- Barra de búsqueda -->
+                <div class="search-bar">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input 
+                            type="text" 
+                            id="search-input" 
+                            placeholder="Buscar ubicación por nombre..." 
+                            oninput="filterLocations()"
+                        >
+                        <button class="btn-clear-search" id="clear-search-btn" onclick="clearSearch()" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div id="search-results-count" class="search-results-count" style="display: none;"></div>
+                </div>
+
+                <div id="locations-list" class="locations-list">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Cargando ubicaciones...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 VerdeGo. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="public/js/config.js"></script>
+    <script src="public/js/pages/addlocation.js"></script>
+</body>
+</html>
