@@ -70,6 +70,11 @@ app.delete('/api/usuario/:id', userController.deleteUser);
 // Rutas de ubicaciones
 app.get('/api/ubicaciones', locationController.getAllLocations);
 app.post('/api/ubicacion', locationController.createLocation);
+app.get('/api/locations', locationController.getAllLocations);
+app.get('/api/locations/:id', locationController.getLocationById);
+app.post('/api/locations', locationController.createLocation);
+app.put('/api/locations/:id', locationController.updateLocation);
+app.delete('/api/locations/:id', locationController.deleteLocation);
 
 // Rutas de rangos
 app.get('/api/ranks', rankController.getAllRanks);
@@ -173,6 +178,10 @@ app.get('/pages/admin-competencias', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/pages/admin-competencias.html'));
 });
 
+app.get('/addlocation', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/pages/addlocation.html'));
+});
+
 // ============================================
 // MANEJO DE ERRORES 404
 // ============================================
@@ -193,6 +202,14 @@ app.listen(PORT, async () => {
     console.log(`🌐 Frontend disponible en: http://localhost:${PORT}`);
     console.log('🚀 ===================================');
     console.log('');
+    
+    // Inicializar ubicaciones predefinidas (solo si la tabla está vacía)
+    try {
+        const { initializeLocations } = require('./scripts/initLocations');
+        await initializeLocations();
+    } catch (err) {
+        console.error('❌ Error al inicializar ubicaciones:', err);
+    }
     
     // Verificar y actualizar misiones semanales al iniciar el servidor
     const { checkAndUpdateMissions } = require('./middleware/weeklyMissionsUpdate');
