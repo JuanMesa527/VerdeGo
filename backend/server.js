@@ -203,25 +203,36 @@ app.listen(PORT, async () => {
     console.log('🚀 ===================================');
     console.log('');
     
-    // Inicializar ubicaciones predefinidas (solo si la tabla está vacía)
-    try {
-        const { initializeLocations } = require('./scripts/initLocations');
-        await initializeLocations();
-    } catch (err) {
-        console.error('❌ Error al inicializar ubicaciones:', err);
-    }
-    
-    // Verificar y actualizar misiones semanales al iniciar el servidor
-    const { checkAndUpdateMissions } = require('./middleware/weeklyMissionsUpdate');
-    console.log('🔍 Verificando misiones semanales al iniciar servidor...');
-    
-    // Esperar un poco para asegurar que las tablas estén creadas
+    // Esperar a que las tablas se creen antes de inicializar datos
     setTimeout(async () => {
+        console.log('');
+        console.log('🔄 ===================================');
+        console.log('📦 Iniciando configuración de datos...');
+        console.log('🔄 ===================================');
+        
+        // Inicializar ubicaciones predefinidas (solo si la tabla está vacía)
         try {
+            const { initializeLocations } = require('./scripts/initLocations');
+            await initializeLocations();
+        } catch (err) {
+            console.error('❌ Error al inicializar ubicaciones:', err);
+            console.error('Detalle:', err.stack);
+        }
+        
+        // Verificar y actualizar misiones semanales
+        try {
+            const { checkAndUpdateMissions } = require('./middleware/weeklyMissionsUpdate');
+            console.log('🔍 Verificando misiones semanales...');
             await checkAndUpdateMissions();
             console.log('✅ Verificación de misiones completada');
         } catch (err) {
             console.error('❌ Error al verificar misiones:', err);
         }
-    }, 1000); // Esperar 1 segundo para que las tablas se creen
+        
+        console.log('');
+        console.log('✅ ===================================');
+        console.log('🎉 Servidor completamente inicializado');
+        console.log('✅ ===================================');
+        console.log('');
+    }, 2000); // Esperar 2 segundos para asegurar que las tablas estén creadas
 });

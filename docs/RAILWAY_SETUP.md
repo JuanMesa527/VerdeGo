@@ -4,38 +4,98 @@
 
 Railway crea un nuevo contenedor en cada deploy, por lo que **SQLite se borra** si no está en un volumen persistente.
 
-## ✅ Solución: Configurar un Volumen Persistente
+## ✅ Solución 1: Usar PostgreSQL (RECOMENDADO)
 
-### Paso 1: Acceder al Dashboard de Railway
+Railway recomienda usar bases de datos administradas en lugar de volúmenes para SQLite. PostgreSQL es gratuito en Railway y mucho más robusto.
+
+### Opción A: Agregar PostgreSQL a tu Proyecto
 
 1. Ve a https://railway.app/
 2. Abre tu proyecto **VerdeGo**
-3. Selecciona el servicio donde está desplegada la aplicación
+3. Haz clic en **"+ New"** → **"Database"** → **"Add PostgreSQL"**
+4. Railway creará automáticamente las variables de entorno:
+   - `DATABASE_URL`
+   - `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`
 
-### Paso 2: Crear un Volumen
+**IMPORTANTE:** Tendrías que migrar de SQLite a PostgreSQL (cambiar el código de la base de datos)
 
-1. En el menú del servicio, haz clic en **"Settings"**
-2. Desplázate hasta la sección **"Volumes"**
-3. Haz clic en **"+ New Volume"**
-4. Configura el volumen:
-   - **Mount Path**: `/app/database`
-   - **Name**: `verdego-database` (o el nombre que prefieras)
-5. Haz clic en **"Add"**
+---
 
-### Paso 3: Configurar Variables de Entorno
+## ✅ Solución 2: Mantener SQLite con Volumen (Railway V2)
 
-En la sección **"Variables"** del servicio, agrega:
+Si prefieres mantener SQLite, necesitas configurar un volumen:
+
+### Paso 1: Agregar Volumen desde el Dashboard
+
+**IMPORTANTE:** Railway V2 cambió la interfaz. Ahora los volúmenes se agregan así:
+
+1. Ve a tu proyecto en Railway
+2. Haz clic en tu servicio (donde está desplegado VerdeGo)
+3. En el menú superior, busca la pestaña **"Data"** o **"Storage"**
+4. Si NO aparece esta opción, crea el volumen desde la CLI:
+
+```bash
+# Instalar Railway CLI
+npm i -g @railway/cli
+
+# Login
+railway login
+
+# Listar proyectos
+railway list
+
+# Conectar al proyecto
+railway link
+
+# Crear volumen
+railway volume create verdego-database --mount-path /app/database
+```
+
+### Paso 2: Variables de Entorno
+
+En la sección **"Variables"** del servicio:
 
 ```bash
 DB_PATH=/app/database/database.db
 NODE_ENV=production
 ```
 
-### Paso 4: Re-deploy
+### Paso 3: Re-deploy
 
-1. Haz clic en **"Deploy"** en el menú del servicio
-2. Selecciona **"Redeploy"** para aplicar los cambios
-3. O simplemente haz un nuevo `git push` y Railway detectará los cambios
+Después de agregar el volumen, haz un nuevo deploy
+
+---
+
+## ✅ Solución 3: WORKAROUND Simple (Temporal)
+
+Si Railway no te permite crear volúmenes fácilmente, usa esta solución temporal:
+
+### Opción: Usar variables de entorno para las ubicaciones
+
+En lugar de inicializar desde el script, puedes:
+
+1. Acepta que la base de datos se reinicie
+2. El script `initLocations.js` se ejecutará en **cada deploy**
+3. Insertará las ubicaciones si la tabla está vacía
+
+**Esto funciona si solo necesitas las ubicaciones predefinidas y no guardas datos de usuarios críticos en Railway.**
+
+Para datos de usuarios, deberías usar PostgreSQL.
+
+---
+
+## 🎯 RECOMENDACIÓN FINAL
+
+**Para producción real, usa PostgreSQL:**
+
+1. Es gratuito en Railway (500MB)
+2. Persiste automáticamente
+3. Más robusto y escalable
+4. Railway hace backups automáticos
+
+**Para desarrollo/pruebas:**
+
+SQLite con el script de inicialización es suficiente. Se reiniciará en cada deploy pero las ubicaciones se vuelven a crear automáticamente.
 
 ---
 
