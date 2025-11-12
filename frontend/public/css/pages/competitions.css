@@ -6,6 +6,8 @@
     min-height: calc(100vh - 80px);
     background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
     padding: 2rem 0;
+    position: relative;
+    z-index: 1;
 }
 
 .competition-container {
@@ -700,6 +702,18 @@
 }
 
 @media (max-width: 768px) {
+    /* Asegurar que el header no interfiera con el menú móvil */
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 9999;
+    }
+    
+    .competition-main {
+        position: relative;
+        z-index: 1;
+    }
+    
     .competition-container-full {
         padding: 0 1rem;
     }

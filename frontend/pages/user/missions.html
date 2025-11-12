@@ -6,6 +6,8 @@
     <title>Misiones Semanales - VerdeGo</title>
     <link rel="icon" type="image/jpeg" href="../../public/assets/logo.jpg">
     <link rel="stylesheet" href="../../public/css/style.css">
+    <!-- Base layout for account pages (sidebar + grid) -->
+    <link rel="stylesheet" href="../../public/css/pages/account.css">
     <link rel="stylesheet" href="../../public/css/pages/missions.css">
 </head>
 <body>
@@ -14,6 +16,11 @@
             <div class="logo">
                 <img src="../../public/assets/logo.jpg" alt="VerdeGo Logo" onclick="window.location.href='../../index.html'">
             </div>
+            <button class="menu-toggle" aria-label="Menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <nav class="nav-buttons">
                 <button class="nav-btn" onclick="window.location.href='../../index.html'">Inicio</button>
                 <button class="nav-btn" onclick="window.location.href='competitions.html'">Competencias</button>
@@ -24,6 +31,7 @@
                 <!-- Se llenará con JavaScript -->
             </div>
         </div>
+        <div class="menu-overlay"></div>
     </header>
 
     <main class="missions-main">
@@ -111,6 +119,7 @@
     </footer>
 
     <script src="../../public/js/config.js"></script>
+    <script src="../../public/js/mobile-menu.js"></script>
     <script src="../../public/js/auth.js"></script>
     <script src="../../public/js/pages/missions.js"></script>
 </body>
