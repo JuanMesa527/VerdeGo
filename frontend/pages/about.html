@@ -14,6 +14,11 @@
             <div class="logo">
                 <img src="../public/assets/logo.jpg" alt="VerdeGo Logo" onclick="window.location.href='/'">
             </div>
+            <button class="menu-toggle" aria-label="Menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <nav class="nav-buttons">
                 <button class="nav-btn" onclick="window.location.href='/'">Inicio</button>
                 <button class="nav-btn" onclick="window.location.href='/pages/user/competitions'">Competencias</button>
@@ -25,6 +30,7 @@
                 <button class="btn-register">Registro</button>
             </div>
         </div>
+        <div class="menu-overlay"></div>
     </header>
 
     <main class="about-main">
@@ -261,6 +267,7 @@
     </footer>
 
     <script src="../public/js/config.js"></script>
+    <script src="../public/js/mobile-menu.js"></script>
     <script src="../public/js/auth.js"></script>
 </body>
 </html>
