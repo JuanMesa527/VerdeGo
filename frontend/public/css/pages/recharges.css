@@ -581,10 +581,90 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+    .account-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .account-sidebar {
+        position: static;
+        top: auto;
+        padding: 12px;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .sidebar-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 8px;
+        -webkit-overflow-scrolling: touch;
+        padding: 0;
+        scroll-behavior: smooth;
+    }
+    
+    .sidebar-nav::-webkit-scrollbar {
+        height: 0;
+        display: none;
+    }
+    
+    .sidebar-nav {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+    
+    .sidebar-item {
+        flex-direction: column;
+        gap: 4px;
+        padding: 12px 8px;
+        min-width: 70px;
+        text-align: center;
+        flex-shrink: 0;
+        border-radius: 12px;
+    }
+    
+    .sidebar-icon {
+        font-size: 1.5rem;
+    }
+    
+    .sidebar-text {
+        font-size: 0.7rem;
+        line-height: 1.1;
+        white-space: normal;
+        word-break: break-word;
+    }
+}
+
 @media (max-width: 768px) {
+    .account-main {
+        padding: 20px 12px;
+    }
+    
+    .account-sidebar {
+        padding: 8px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+    }
+    
+    .sidebar-item {
+        padding: 10px 6px;
+        min-width: 65px;
+        gap: 3px;
+    }
+    
+    .sidebar-icon {
+        font-size: 1.4rem;
+    }
+    
+    .sidebar-text {
+        font-size: 0.65rem;
+    }
+    
     .conversion-info {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
         align-items: flex-start;
     }
 
@@ -595,11 +675,35 @@
     .history-item {
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
+        gap: 12px;
     }
 
     .history-values {
         align-items: flex-start;
+    }
+    
+    .points-summary-card {
+        padding: 24px 16px;
+    }
+    
+    .recharge-card {
+        padding: 24px 16px;
+    }
+    
+    .history-section {
+        padding: 0;
+    }
+
+    .card-visual {
+        padding: 28px 18px;
+    }
+
+    .card-title {
+        font-size: 22px;
+    }
+
+    .card-icon {
+        font-size: 56px;
     }
 }
 

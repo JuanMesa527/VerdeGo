@@ -7,6 +7,24 @@
 
 body {
     font-family: Arial, sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Permitir selección solo en inputs, textareas y elementos editables */
+input,
+textarea,
+[contenteditable="true"],
+p,
+span,
+h1, h2, h3, h4, h5, h6 {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
 }
 
 /* Header */

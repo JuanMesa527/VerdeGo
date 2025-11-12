@@ -160,7 +160,7 @@
 /* Grid de Misiones */
 .missions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
 }
 
@@ -423,50 +423,73 @@
 @media (max-width: 768px) {
     .account-container {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 16px;
     }
 
     .account-sidebar {
         position: static;
         top: auto;
+        padding: 8px;
+        border-radius: 10px;
+        margin-bottom: 8px;
     }
 
     .sidebar-nav {
         flex-direction: row;
         overflow-x: auto;
-        gap: 5px;
+        gap: 8px;
+        -webkit-overflow-scrolling: touch;
+        padding: 0;
+    }
+    
+    .sidebar-nav::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .sidebar-nav {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
     .sidebar-item {
         flex-direction: column;
-        gap: 5px;
-        padding: 10px;
-        min-width: 80px;
+        gap: 3px;
+        padding: 10px 6px;
+        min-width: 65px;
         text-align: center;
+        flex-shrink: 0;
+        border-radius: 12px;
+    }
+    
+    .sidebar-icon {
+        font-size: 1.4rem;
     }
 
     .sidebar-text {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
+        line-height: 1.1;
+        white-space: normal;
+        word-break: break-word;
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
     }
 
     .hero-icon {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
 
     .missions-container {
-        padding: 30px 15px;
+        padding: 0;
     }
 
     .user-stats-card {
         grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 20px;
+        gap: 16px;
+        padding: 18px;
     }
 
     .missions-grid {
@@ -474,12 +497,12 @@
     }
 
     .stat-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 2rem;
+        width: 48px;
+        height: 48px;
+        font-size: 1.8rem;
     }
 
     .stat-value {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
 }
