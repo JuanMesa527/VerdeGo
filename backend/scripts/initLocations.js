@@ -6,8 +6,13 @@
 const db = require('../config/database');
 
 // Ubicaciones predefinidas de Bogotá, Colombia
+// SOLO en las localidades de Chapinero y Santa Fe
 const defaultLocations = [
-    // Ubicaciones VerdeGo - Centros de reciclaje
+    // ==========================================
+    // LOCALIDAD DE CHAPINERO
+    // ==========================================
+    
+    // Centros de Reciclaje VerdeGo - Chapinero
     {
         name: 'VerdeGo Centro Chapinero',
         address: 'Carrera 13 #53-45, Chapinero, Bogotá',
@@ -16,68 +21,26 @@ const defaultLocations = [
         type: 'verdego'
     },
     {
-        name: 'VerdeGo Usaquén',
-        address: 'Calle 119 #6-20, Usaquén, Bogotá',
-        latitude: 4.7001,
-        longitude: -74.0309,
+        name: 'VerdeGo Chapinero Alto',
+        address: 'Carrera 7 #62-30, Chapinero, Bogotá',
+        latitude: 4.6589,
+        longitude: -74.0602,
         type: 'verdego'
     },
     {
-        name: 'VerdeGo Kennedy',
-        address: 'Avenida Américas #68-55, Kennedy, Bogotá',
-        latitude: 4.6363,
-        longitude: -74.1456,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo Fontibón',
-        address: 'Calle 17 #99-32, Fontibón, Bogotá',
-        latitude: 4.6831,
-        longitude: -74.1428,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo Engativá',
-        address: 'Avenida Boyacá #72-81, Engativá, Bogotá',
-        latitude: 4.7145,
-        longitude: -74.1121,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo Teusaquillo',
-        address: 'Carrera 24 #39-42, Teusaquillo, Bogotá',
-        latitude: 4.6365,
-        longitude: -74.0799,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo San Cristóbal',
-        address: 'Carrera 5 Este #4-20 Sur, San Cristóbal, Bogotá',
-        latitude: 4.5691,
-        longitude: -74.0876,
+        name: 'VerdeGo Zona T',
+        address: 'Carrera 14 #83-20, Chapinero, Bogotá',
+        latitude: 4.6678,
+        longitude: -74.0554,
         type: 'verdego'
     },
     
-    // Ubicaciones VerdeGo - Universidades
+    // Universidades en Chapinero
     {
         name: 'VerdeGo Universidad Piloto de Colombia',
         address: 'Carrera 9 #45A-44, Chapinero, Bogotá',
         latitude: 4.6389,
         longitude: -74.0658,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo Universidad Nacional de Colombia',
-        address: 'Carrera 30 #45-03, Ciudad Universitaria, Bogotá',
-        latitude: 4.6382,
-        longitude: -74.0836,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo Universidad de los Andes',
-        address: 'Carrera 1 #18A-12, La Candelaria, Bogotá',
-        latitude: 4.6017,
-        longitude: -74.0656,
         type: 'verdego'
     },
     {
@@ -88,45 +51,10 @@ const defaultLocations = [
         type: 'verdego'
     },
     {
-        name: 'VerdeGo Universidad del Rosario',
-        address: 'Calle 12C #6-25, La Candelaria, Bogotá',
-        latitude: 4.6012,
-        longitude: -74.0728,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo Universidad Externado de Colombia',
-        address: 'Calle 12 #1-17 Este, La Candelaria, Bogotá',
-        latitude: 4.5978,
-        longitude: -74.0689,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo Universidad Distrital',
-        address: 'Carrera 7 #40B-53, Teusaquillo, Bogotá',
-        latitude: 4.6281,
-        longitude: -74.0654,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo Universidad La Salle',
-        address: 'Carrera 2 #10-70, La Candelaria, Bogotá',
-        latitude: 4.5963,
-        longitude: -74.0703,
-        type: 'verdego'
-    },
-    {
         name: 'VerdeGo Universidad Santo Tomás',
         address: 'Carrera 9 #51-11, Chapinero, Bogotá',
         latitude: 4.6412,
         longitude: -74.0625,
-        type: 'verdego'
-    },
-    {
-        name: 'VerdeGo Universidad Central',
-        address: 'Carrera 5 #21-38, Santa Fe, Bogotá',
-        latitude: 4.6089,
-        longitude: -74.0698,
         type: 'verdego'
     },
     {
@@ -137,96 +65,12 @@ const defaultLocations = [
         type: 'verdego'
     },
     
-    // Tiendas Aliadas - Supermercados
-    {
-        name: 'Tienda Aliada Éxito Suba',
-        address: 'Avenida Suba #95-85, Suba, Bogotá',
-        latitude: 4.7556,
-        longitude: -74.0854,
-        type: 'aliada'
-    },
+    // Tiendas Aliadas - Chapinero
     {
         name: 'Tienda Aliada Carulla Zona Rosa',
-        address: 'Carrera 13 #82-71, Zona Rosa, Bogotá',
+        address: 'Carrera 13 #82-71, Chapinero, Bogotá',
         latitude: 4.6671,
         longitude: -74.0547,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Jumbo Calle 80',
-        address: 'Avenida Calle 80 #69C-55, Bogotá',
-        latitude: 4.7201,
-        longitude: -74.0984,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Olímpica Bosa',
-        address: 'Transversal 78K #38A Sur-35, Bosa, Bogotá',
-        latitude: 4.6134,
-        longitude: -74.1894,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada PriceSmart Soacha',
-        address: 'Autopista Sur #46-85, Soacha, Bogotá',
-        latitude: 4.5824,
-        longitude: -74.2116,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Éxito Américas',
-        address: 'Avenida Américas #39C-95, Puente Aranda, Bogotá',
-        latitude: 4.6312,
-        longitude: -74.1234,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Carulla Unicentro',
-        address: 'Avenida 15 #123-30, Usaquén, Bogotá',
-        latitude: 4.7012,
-        longitude: -74.0398,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Jumbo Calle 170',
-        address: 'Autopista Norte #169-85, Suba, Bogotá',
-        latitude: 4.7523,
-        longitude: -74.0456,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Éxito Titan Plaza',
-        address: 'Autopista Sur #133-00, Kennedy, Bogotá',
-        latitude: 4.6045,
-        longitude: -74.1567,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Carulla Parque 93',
-        address: 'Carrera 11A #93A-10, Chicó, Bogotá',
-        latitude: 4.6756,
-        longitude: -74.0398,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Jumbo Hayuelos',
-        address: 'Avenida Agoberto Mejía #36-61, Fontibón, Bogotá',
-        latitude: 4.6721,
-        longitude: -74.1389,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Makro Calle 13',
-        address: 'Calle 13 #68-98, Fontibón, Bogotá',
-        latitude: 4.6534,
-        longitude: -74.1178,
-        type: 'aliada'
-    },
-    {
-        name: 'Tienda Aliada Alkosto Calle 80',
-        address: 'Calle 80 #108-70, Engativá, Bogotá',
-        latitude: 4.7234,
-        longitude: -74.1245,
         type: 'aliada'
     },
     {
@@ -238,9 +82,124 @@ const defaultLocations = [
     },
     {
         name: 'Tienda Aliada Carulla Andino',
-        address: 'Carrera 11 #82-71, Centro Andino, Bogotá',
+        address: 'Carrera 11 #82-71, Chapinero, Bogotá',
         latitude: 4.6623,
         longitude: -74.0523,
+        type: 'aliada'
+    },
+    {
+        name: 'Tienda Aliada Jumbo Calle 53',
+        address: 'Carrera 13 #52-55, Chapinero, Bogotá',
+        latitude: 4.6520,
+        longitude: -74.0618,
+        type: 'aliada'
+    },
+    {
+        name: 'Tienda Aliada Carulla Calle 63',
+        address: 'Carrera 7 #63-42, Chapinero, Bogotá',
+        latitude: 4.6595,
+        longitude: -74.0598,
+        type: 'aliada'
+    },
+    
+    // ==========================================
+    // LOCALIDAD DE SANTA FE
+    // ==========================================
+    
+    // Centros de Reciclaje VerdeGo - Santa Fe
+    {
+        name: 'VerdeGo Santa Fe Centro',
+        address: 'Carrera 5 #15-20, Santa Fe, Bogotá',
+        latitude: 4.6025,
+        longitude: -74.0712,
+        type: 'verdego'
+    },
+    {
+        name: 'VerdeGo Las Aguas',
+        address: 'Carrera 3 #19-70, Santa Fe, Bogotá',
+        latitude: 4.6058,
+        longitude: -74.0689,
+        type: 'verdego'
+    },
+    {
+        name: 'VerdeGo Egipto',
+        address: 'Carrera 4 #24-35, Santa Fe, Bogotá',
+        latitude: 4.6105,
+        longitude: -74.0695,
+        type: 'verdego'
+    },
+    
+    // Universidades en Santa Fe
+    {
+        name: 'VerdeGo Universidad Central',
+        address: 'Carrera 5 #21-38, Santa Fe, Bogotá',
+        latitude: 4.6089,
+        longitude: -74.0698,
+        type: 'verdego'
+    },
+    {
+        name: 'VerdeGo Universidad de los Andes',
+        address: 'Carrera 1 #18A-12, Santa Fe, Bogotá',
+        latitude: 4.6017,
+        longitude: -74.0656,
+        type: 'verdego'
+    },
+    {
+        name: 'VerdeGo Universidad del Rosario',
+        address: 'Calle 12C #6-25, Santa Fe, Bogotá',
+        latitude: 4.6012,
+        longitude: -74.0728,
+        type: 'verdego'
+    },
+    {
+        name: 'VerdeGo Universidad Externado',
+        address: 'Calle 12 #1-17 Este, Santa Fe, Bogotá',
+        latitude: 4.5978,
+        longitude: -74.0689,
+        type: 'verdego'
+    },
+    {
+        name: 'VerdeGo Universidad La Salle',
+        address: 'Carrera 2 #10-70, Santa Fe, Bogotá',
+        latitude: 4.5963,
+        longitude: -74.0703,
+        type: 'verdego'
+    },
+    
+    // Tiendas Aliadas - Santa Fe
+    {
+        name: 'Tienda Aliada Carulla La Candelaria',
+        address: 'Carrera 7 #12-50, Santa Fe, Bogotá',
+        latitude: 4.5989,
+        longitude: -74.0732,
+        type: 'aliada'
+    },
+    {
+        name: 'Tienda Aliada Éxito Centro',
+        address: 'Carrera 10 #16-22, Santa Fe, Bogotá',
+        latitude: 4.6032,
+        longitude: -74.0725,
+        type: 'aliada'
+    },
+    {
+        name: 'Tienda Aliada Surtimax Las Aguas',
+        address: 'Carrera 3 #18-45, Santa Fe, Bogotá',
+        latitude: 4.6048,
+        longitude: -74.0692,
+        type: 'aliada'
+    },
+    {
+        name: 'Tienda Aliada Jumbo Av Jiménez',
+        address: 'Avenida Jiménez #4-30, Santa Fe, Bogotá',
+        latitude: 4.5965,
+        longitude: -74.0745,
+        type: 'aliada'
+    },
+    {
+        name: 'Tienda Aliada D1 Calle 26',
+        address: 'Carrera 5 #26-85, Santa Fe, Bogotá',
+        latitude: 4.6125,
+        longitude: -74.0701,
         type: 'aliada'
     }
 ];
